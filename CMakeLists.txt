@@ -162,7 +162,7 @@ catkin_package(
  INCLUDE_DIRS include
  LIBRARIES idyn_ros_interface
  CATKIN_DEPENDS roscpp rospy roslib srdfdom
- DEPENDS system_lib TinyXML
+ DEPENDS system_lib
 )
 
 install(TARGETS OpenSoT ros_yarp_Cartesian_interactive_marker ros_yarp_gaze_interactive_marker
@@ -189,11 +189,11 @@ install_basic_package_files(OpenSoT VARS_PREFIX ${VARS_PREFIX}
 include(AddUninstallTarget)
 
 add_subdirectory(app)
-add_subdirectory(doc)
-add_subdirectory(examples)
+#add_subdirectory(doc)
+#add_subdirectory(examples)
 
 #######################
 # Add Testing target  #
 #######################
-enable_testing()
-add_subdirectory(tests)
+#enable_testing()
+#add_subdirectory(tests)
