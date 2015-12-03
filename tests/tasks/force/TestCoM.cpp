@@ -265,7 +265,7 @@ TEST_F(testForceCoM, testForceCoM2) {
                 new OpenSoT::constraints::force::FrictionCone(wrench_d, coman_robot.idynutils,
                                                               mu,world_R_surfaces));
 
-    force_com_task->getConstraints().push_back(friction_cones_constraint);
+    //force_com_task->getConstraints().push_back(friction_cones_constraint);
 
     OpenSoT::solvers::QPOases_sot::Stack stack_of_tasks_force;
     stack_of_tasks_force.push_back(force_com_task);
@@ -299,8 +299,8 @@ TEST_F(testForceCoM, testForceCoM2) {
     KDL::Frame base_link_T_ft_r = coman_robot.idynutils.iDyn3_model.getPositionKDL(
         coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
         coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
-    wrench_d_lankle_KDL = base_link_T_ft_l*world_T_ft_lKDL.Inverse()*wrench_d_lankle_KDL;
-    wrench_d_rankle_KDL = base_link_T_ft_r*world_T_ft_rKDL.Inverse()*wrench_d_rankle_KDL;
+    wrench_d_lankle_KDL = base_link_T_ft_l.M*world_T_ft_lKDL.Inverse().M*wrench_d_lankle_KDL;
+    wrench_d_rankle_KDL = base_link_T_ft_r.M*world_T_ft_rKDL.Inverse().M*wrench_d_rankle_KDL;
     cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
     cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
 
@@ -337,6 +337,7 @@ TEST_F(testForceCoM, testForceCoM2) {
         filter_ft.push_back(-1.0*ft_readings[_ft_measurements[i].first]);}
     coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, false);
 
+
 //    std::cout<<"INITIAL REF = ["<<force_com_task->getReference().toString()<<std::endl;
 //    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
 
@@ -349,23 +350,21 @@ TEST_F(testForceCoM, testForceCoM2) {
 
     tasks::velocity::Interaction::Ptr interaction_lankle_task(
                 new tasks::velocity::Interaction("interaction::l_ankle",
-                                q, coman_robot.idynutils, "l_ankle", "Waist", "l_ankle"));
+                                q, coman_robot.idynutils, "l_ankle", "Waist", "l_leg_ft"));
     interaction_lankle_task->setCompliance(C);
     interaction_lankle_task->setReferenceWrench(wrench_d_lankle);
     interaction_lankle_task->update(q);
-//    std::cout<<"actual_wrench_lankle = ["<<interaction_lankle_task->getActualWrench().toString()<<"] expressed in Waist"<<std::endl;
-//    std::cout<<"error_wrench_lankle = ["<<interaction_lankle_task->getWrenchError().toString()<<"]"<<std::endl;
+    //std::cout<<"actual_wrench_lankle = ["<<interaction_lankle_task->getActualWrench().toString()<<"] expressed in Waist"<<std::endl;
+    //std::cout<<"error_wrench_lankle = ["<<interaction_lankle_task->getWrenchError().toString()<<"]"<<std::endl;
 
     tasks::velocity::Interaction::Ptr interaction_rankle_task(
                 new tasks::velocity::Interaction("interaction::r_ankle",
-                                q, coman_robot.idynutils, "r_ankle", "Waist", "r_ankle"));
+                                q, coman_robot.idynutils, "r_ankle", "Waist", "r_leg_ft"));
     interaction_rankle_task->setCompliance(C);
     interaction_rankle_task->setReferenceWrench(wrench_d_rankle);
     interaction_rankle_task->update(q);
 //    std::cout<<"actual_wrench_lankle = ["<<interaction_rankle_task->getActualWrench().toString()<<"] expressed in Waist"<<std::endl;
 //    std::cout<<"error_wrench_rankle = ["<<interaction_rankle_task->getWrenchError().toString()<<"]"<<std::endl;
-
-
 
     std::list<tasks::velocity::Cartesian::TaskPtr> aggregated_list;
     aggregated_list.push_back(interaction_lankle_task);
@@ -480,8 +479,8 @@ TEST_F(testForceCoM, testForceCoM2) {
         base_link_T_ft_r = coman_robot.idynutils.iDyn3_model.getPositionKDL(
             coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
             coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
-        wrench_d_lankle_KDL = base_link_T_ft_l*world_T_ft_lKDL.Inverse()*wrench_d_lankle_KDL;
-        wrench_d_rankle_KDL = base_link_T_ft_r*world_T_ft_rKDL.Inverse()*wrench_d_rankle_KDL;
+        wrench_d_lankle_KDL = base_link_T_ft_l.M*world_T_ft_lKDL.Inverse().M*wrench_d_lankle_KDL;
+        wrench_d_rankle_KDL = base_link_T_ft_r.M*world_T_ft_rKDL.Inverse().M*wrench_d_rankle_KDL;
         cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
         cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
 
@@ -622,13 +621,13 @@ TEST_F(testForceCoM, testForceCoM3) {
     sot_force->solve(wrench_d);
 
     //This is the wrench in sensor frame expressed in world, we have to tranform it!
-    yarp::sig::Matrix world_T_ft_l = coman_robot.idynutils.iDyn3_model.getPosition(
-        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
-    yarp::sig::Matrix world_T_ft_r = coman_robot.idynutils.iDyn3_model.getPosition(
-        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
-    KDL::Frame world_T_ft_lKDL, world_T_ft_rKDL;
-    cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_l, world_T_ft_lKDL);
-    cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_r, world_T_ft_rKDL);
+//    yarp::sig::Matrix world_T_ft_l = coman_robot.idynutils.iDyn3_model.getPosition(
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
+//    yarp::sig::Matrix world_T_ft_r = coman_robot.idynutils.iDyn3_model.getPosition(
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
+//    KDL::Frame world_T_ft_lKDL, world_T_ft_rKDL;
+//    cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_l, world_T_ft_lKDL);
+//    cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_r, world_T_ft_rKDL);
 
     yarp::sig::Vector wrench_d_lankle = -1.0*yarp::math::cat(
                 wrench_d.subVector(0,2),wrench_d.subVector(6,8));
@@ -641,14 +640,22 @@ TEST_F(testForceCoM, testForceCoM3) {
     cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_lankle, wrench_d_lankle_KDL);
     KDL::Wrench wrench_d_rankle_KDL;
     cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_rankle, wrench_d_rankle_KDL);
-    KDL::Frame base_link_T_ft_l = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//    KDL::Frame base_link_T_ft_l = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
+//    KDL::Frame base_link_T_ft_r = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
+//    wrench_d_lankle_KDL = base_link_T_ft_l.M*world_T_ft_lKDL.Inverse()*wrench_d_lankle_KDL;
+//    wrench_d_rankle_KDL = base_link_T_ft_r.M*world_T_ft_rKDL.Inverse()*wrench_d_rankle_KDL;
+//    cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
+//    cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
+
+    KDL::Frame base_link_T_world = coman_robot.idynutils.iDyn3_model.getPositionKDL(
         coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
-    KDL::Frame base_link_T_ft_r = coman_robot.idynutils.iDyn3_model.getPositionKDL(
-        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-        coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
-    wrench_d_lankle_KDL = base_link_T_ft_l*world_T_ft_lKDL.Inverse()*wrench_d_lankle_KDL;
-    wrench_d_rankle_KDL = base_link_T_ft_r*world_T_ft_rKDL.Inverse()*wrench_d_rankle_KDL;
+        true);
+    wrench_d_lankle_KDL = base_link_T_world.M*wrench_d_lankle_KDL;
+    wrench_d_rankle_KDL = base_link_T_world.M*wrench_d_rankle_KDL;
     cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
     cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
 
@@ -688,7 +695,7 @@ TEST_F(testForceCoM, testForceCoM3) {
 
     tasks::velocity::Interaction::Ptr interaction_lankle_task(
                 new tasks::velocity::Interaction("interaction::l_ankle",
-                                q, coman_robot.idynutils, "l_ankle", "Waist", "l_ankle"));
+                                q, coman_robot.idynutils, "l_ankle", "Waist", "l_leg_ft"));
     interaction_lankle_task->setCompliance(C);
     interaction_lankle_task->setReferenceWrench(wrench_d_lankle);
     interaction_lankle_task->update(q);
@@ -697,7 +704,7 @@ TEST_F(testForceCoM, testForceCoM3) {
 
     tasks::velocity::Interaction::Ptr interaction_rankle_task(
                 new tasks::velocity::Interaction("interaction::r_ankle",
-                                q, coman_robot.idynutils, "r_ankle", "Waist", "r_ankle"));
+                                q, coman_robot.idynutils, "r_ankle", "Waist", "r_leg_ft"));
     interaction_rankle_task->setCompliance(C);
     interaction_rankle_task->setReferenceWrench(wrench_d_rankle);
     interaction_rankle_task->update(q);
@@ -791,12 +798,12 @@ TEST_F(testForceCoM, testForceCoM3) {
         if(sot_force->solve(wrench))
            wrench_d = wrench;
 
-        world_T_ft_l = coman_robot.idynutils.iDyn3_model.getPosition(
-            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
-        world_T_ft_r = coman_robot.idynutils.iDyn3_model.getPosition(
-            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
-        cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_l, world_T_ft_lKDL);
-        cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_r, world_T_ft_rKDL);
+//        world_T_ft_l = coman_robot.idynutils.iDyn3_model.getPosition(
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
+//        world_T_ft_r = coman_robot.idynutils.iDyn3_model.getPosition(
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
+//        cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_l, world_T_ft_lKDL);
+//        cartesian_utils::fromYARPMatrixtoKDLFrame(world_T_ft_r, world_T_ft_rKDL);
 
         wrench_d_lankle = -1.0*yarp::math::cat(
                     wrench_d.subVector(0,2),wrench_d.subVector(6,8));
@@ -805,14 +812,22 @@ TEST_F(testForceCoM, testForceCoM3) {
 
         cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_lankle, wrench_d_lankle_KDL);
         cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_rankle, wrench_d_rankle_KDL);
-        base_link_T_ft_l = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//        base_link_T_ft_l = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
+//        base_link_T_ft_r = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
+//        wrench_d_lankle_KDL = base_link_T_ft_l.M*world_T_ft_lKDL.Inverse().M*wrench_d_lankle_KDL;
+//        wrench_d_rankle_KDL = base_link_T_ft_r.M*world_T_ft_rKDL.Inverse().M*wrench_d_rankle_KDL;
+//        cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
+//        cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
+
+        base_link_T_world = coman_robot.idynutils.iDyn3_model.getPositionKDL(
             coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[0]));
-        base_link_T_ft_r = coman_robot.idynutils.iDyn3_model.getPositionKDL(
-            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-            coman_robot.idynutils.iDyn3_model.getLinkIndex(ft_in_contact[1]));
-        wrench_d_lankle_KDL = base_link_T_ft_l.M*world_T_ft_lKDL.Inverse().M*wrench_d_lankle_KDL;
-        wrench_d_rankle_KDL = base_link_T_ft_r.M*world_T_ft_rKDL.Inverse().M*wrench_d_rankle_KDL;
+            true);
+        wrench_d_lankle_KDL = base_link_T_world.M*wrench_d_lankle_KDL;
+        wrench_d_rankle_KDL = base_link_T_world.M*wrench_d_rankle_KDL;
         cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
         cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
 

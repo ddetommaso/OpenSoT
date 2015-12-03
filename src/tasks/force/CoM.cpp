@@ -125,15 +125,15 @@ yarp::sig::Matrix OpenSoT::tasks::force::CoM::computeW(const std::vector<std::st
 {
     yarp::sig::Matrix W(3, 3*ft_in_contact.size());
 
-    yarp::sig::Matrix Pi(3,3);
-    yarp::sig::Vector pi(3,0.0);
+//    yarp::sig::Matrix Pi(3,3);
+//    yarp::sig::Vector pi(3,0.0);
     yarp::sig::Matrix I(3,3); I.eye();
     yarp::sig::Matrix world_T_ft(4,4);
     for(unsigned int i = 0; i < ft_in_contact.size(); ++i){
-//        world_T_ft = _robot.iDyn3_model.getPosition(
-//                    _robot.iDyn3_model.getLinkIndex(ft_in_contact[i]));
-//        W.setSubmatrix(I*world_T_ft.submatrix(0,2,0,2), 0, i*3);
-        W.setSubmatrix(I, 0, i*I.rows());
+        world_T_ft = _robot.iDyn3_model.getPosition(
+                    _robot.iDyn3_model.getLinkIndex(ft_in_contact[i]));
+        W.setSubmatrix(I*world_T_ft.submatrix(0,2,0,2), 0, i*3);
+//        W.setSubmatrix(I, 0, i*I.rows());
 
 
 //        pi = -1.0*_actualPosition + world_T_ft.getCol(3).subVector(0,2);
