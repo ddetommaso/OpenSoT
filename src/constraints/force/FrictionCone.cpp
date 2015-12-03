@@ -8,22 +8,18 @@ namespace OpenSoT {
        namespace force {
 
        FrictionCone::FrictionCone(const yarp::sig::Vector &x, iDynUtils &robot,
-                                  const std::map<std::string, double>& mu,
-                                  const std::map<std::string, yarp::sig::Matrix>& world_R_surfaces):
+                                  const std::map<std::string, double>& mu):
            Constraint(x.size()),
            _robot(robot),
-           _mu(mu),
-           _world_R_surfaces(world_R_surfaces)
+           _mu(mu)
        {
            OpenSoT::constraints::velocity::Dynamics::crawlLinks(_robot.getForceTorqueFrameNames(),
                                                 _robot.getLinksInContact(),
                                                _robot,
                                                _ft_in_contact);
-           assert(_world_R_surfaces.size() == _ft_in_contact.size());
            assert(_mu.size() == _ft_in_contact.size());
-           for(unsigned int i = 0; i < _world_R_surfaces.size(); ++i){
-               assert(_world_R_surfaces.find(_ft_in_contact[i]) != _world_R_surfaces.end());
-               assert(_mu.find(_ft_in_contact[i]) != _mu.end());}
+           for(unsigned int i = 0; i < _ft_in_contact.size(); ++i)
+               assert(_mu.find(_ft_in_contact[i]) != _mu.end());
 
            computeAineq();
            computeUpperBound();
@@ -53,8 +49,7 @@ namespace OpenSoT {
                  Ci(2,2) = -mu;
                  Ci(3,2) = -mu;
 
-                _Aineq.setSubmatrix(Ci*(_world_R_surfaces[_ft_in_contact[i]]).transposed(),
-                        i*Ci.rows(), i*Ci.cols());
+                _Aineq.setSubmatrix(Ci, i*Ci.rows(), i*Ci.cols());
             }
        }
 
@@ -78,11 +73,9 @@ namespace OpenSoT {
            {
                _ft_in_contact = ft_in_contact;
 
-               assert(_world_R_surfaces.size() == _ft_in_contact.size());
                assert(_mu.size() == _ft_in_contact.size());
-               for(unsigned int i = 0; i < _world_R_surfaces.size(); ++i){
-                   assert(_world_R_surfaces.find(_ft_in_contact[i]) != _world_R_surfaces.end());
-                   assert(_mu.find(_ft_in_contact[i]) != _mu.end());}
+               for(unsigned int i = 0; i < _ft_in_contact.size(); ++i)
+                   assert(_mu.find(_ft_in_contact[i]) != _mu.end());
 
                computeAineq();
                computeUpperBound();
