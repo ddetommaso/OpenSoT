@@ -59,11 +59,6 @@
                 yarp::sig::Vector forceError;
                 yarp::sig::Vector torqueError;
 
-                /*********** TASK PARAMETERS ************/
-
-
-
-                /****************************************/
 
 
                 Interaction(std::string task_id,
@@ -115,6 +110,8 @@
                 void setCompliance(const yarp::sig::Matrix& C);
 
                 yarp::sig::Vector getWrenchError();
+
+                yarp::sig::Vector getDeltaX();
 
                 };
         }

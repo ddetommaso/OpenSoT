@@ -85,6 +85,11 @@ yarp::sig::Vector Interaction::getWrenchError()
     return _desiredWrench - _actualWrench;
 }
 
+yarp::sig::Vector Interaction::getDeltaX()
+{
+    return _C * getWrenchError();
+}
+
 void Interaction::_update(const yarp::sig::Vector &x)
 {
     updateActualWrench();
