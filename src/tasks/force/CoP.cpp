@@ -43,8 +43,9 @@ void CoP::_update(const yarp::sig::Vector &x)
 
         yarp::sig::Matrix Adj(6,6); Adj.eye();
         yarp::sig::Matrix cross(3,3); cross.zero();
-        cross(0,1) = -(-_d(i));
-        cross(1,0) = -_d(i);
+        cross(0,1) = -(-_d(i)); cross(0,2) = _desired_CoP(2*i+1);
+        cross(1,0) = -_d(i); cross(1,2) = -_desired_CoP(2*i);
+        cross(2,0) = -_desired_CoP(2*i+1); cross(2,1) = _desired_CoP(2*i);
         Adj.setSubmatrix(cross, 3, 0);
 
         A = A*Adj;
