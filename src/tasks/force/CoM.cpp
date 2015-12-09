@@ -26,8 +26,6 @@
 using namespace OpenSoT::tasks::force;
 using namespace yarp::math;
 
-#define LAMBDA_THS 1E-12
-
 CoM::CoM(   const yarp::sig::Vector& x,
             iDynUtils &robot) :
     Task("CoM", x.size()), _robot(robot),
