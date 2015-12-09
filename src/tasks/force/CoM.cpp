@@ -133,7 +133,6 @@ yarp::sig::Matrix OpenSoT::tasks::force::CoM::computeW(const std::vector<std::st
         world_T_ft = _robot.iDyn3_model.getPosition(
                     _robot.iDyn3_model.getLinkIndex(ft_in_contact[i]));
         W.setSubmatrix(I*world_T_ft.submatrix(0,2,0,2), 0, i*3);
-//        W.setSubmatrix(I, 0, i*I.rows());
 
 
 //        pi = -1.0*_actualPosition + world_T_ft.getCol(3).subVector(0,2);

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2014 Walkman
- * Authors:Alessio Rocchi, Enrico Mingo
- * email:  alessio.rocchi@iit.it, enrico.mingo@iit.it
+ * Copyright (C) 2015 Walkman
+ * Authors: Enrico Mingo Hoffman, Alessio Rocchi
+ * email: enrico.mingo@iit.it, alessio.rocchi@iit.it
  * Permission is granted to copy, distribute, and/or modify this program
  * under the terms of the GNU Lesser General Public License, version 2 or any
  * later version published by the Free Software Foundation.
@@ -15,8 +15,8 @@
  * Public License for more details
 */
 
-#ifndef __TASKS_VELOCITY_COM_H__
-#define __TASKS_VELOCITY_COM_H__
+#ifndef __TASKS_FORCE_COM_H__
+#define __TASKS_FORCE_COM_H__
 
 #include <OpenSoT/Task.h>
 #include <idynutils/idynutils.h>
