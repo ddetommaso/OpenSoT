@@ -50,20 +50,9 @@ void CoP::_update(const yarp::sig::Vector &x)
         A(0,0) = _d(i); A(0,2) = _desired_CoP(2*i);   A(0,4) = 1.0;
         A(1,1) = _d(i); A(1,2) = _desired_CoP(2*i+1); A(1,3) = -1.0;
 
-
-        yarp::sig::Matrix Adj(6,6); Adj.eye();
-        yarp::sig::Matrix cross(3,3); cross.zero();
-        cross(0,1) = -(-_d(i)); cross(0,2) = _desired_CoP(2*i+1);
-        cross(1,0) = -_d(i); cross(1,2) = -_desired_CoP(2*i);
-        cross(2,0) = -_desired_CoP(2*i+1); cross(2,1) = _desired_CoP(2*i);
-        Adj.setSubmatrix(-1.0*cross, 3, 0);
-
-        A = A*Adj;
-
         _A.setSubmatrix(A.submatrix(0, 1, 0, 2), 2*i, 3*i);
         _A.setSubmatrix(A.submatrix(0, 1, 3, 5), 2*i, _CoP_frames.size()*3+3*i);
     }
-
 }
 
 void CoP::computeD()
