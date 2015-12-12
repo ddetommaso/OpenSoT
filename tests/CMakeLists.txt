@@ -76,8 +76,8 @@ if(TRUE OR YCM_EP_DEVEL_MODE_OpenSoT)
                       testCartesianVelocityTask
                       testCoMForceTask
                       testCoMVelocityTask
-                      testDesiredWrenchTask
-                      testCoPForceTask
+                      #testDesiredWrenchTask
+                      #testCoPForceTask
                       testInteractionVelocityTask
                       TestManipulabilityTask
                       testMinimizeAccelerationTask
@@ -196,13 +196,13 @@ ADD_EXECUTABLE(testCoMForceTask tasks/force/TestCoM.cpp)
 TARGET_LINK_LIBRARIES(testCoMForceTask ${TestLibs})
 add_dependencies(testCoMForceTask GTest-ext OpenSoT)
 
-ADD_EXECUTABLE(testCoPForceTask tasks/force/TestCoP.cpp)
-TARGET_LINK_LIBRARIES(testCoPForceTask ${TestLibs})
-add_dependencies(testCoPForceTask GTest-ext OpenSoT)
+#ADD_EXECUTABLE(testCoPForceTask tasks/force/TestCoP.cpp)
+#TARGET_LINK_LIBRARIES(testCoPForceTask ${TestLibs})
+#add_dependencies(testCoPForceTask GTest-ext OpenSoT)
 
-ADD_EXECUTABLE(testDesiredWrenchTask tasks/force/TestDesiredWrench.cpp)
-TARGET_LINK_LIBRARIES(testDesiredWrenchTask ${TestLibs})
-add_dependencies(testDesiredWrenchTask GTest-ext OpenSoT)
+#ADD_EXECUTABLE(testDesiredWrenchTask tasks/force/TestDesiredWrench.cpp)
+#TARGET_LINK_LIBRARIES(testDesiredWrenchTask ${TestLibs})
+#add_dependencies(testDesiredWrenchTask GTest-ext OpenSoT)
 
 ADD_EXECUTABLE(testCoMVelocityTask tasks/velocity/TestCoM.cpp)
 TARGET_LINK_LIBRARIES(testCoMVelocityTask ${TestLibs})
@@ -295,8 +295,8 @@ add_test(NAME OpenSoT_task_Aggregated COMMAND testAggregatedTask)
 add_test(NAME OpenSoT_task_SubTask COMMAND testSubTask)
 add_test(NAME OpenSoT_task_velocity_Cartesian COMMAND testCartesianVelocityTask)
 add_test(NAME OpenSoT_task_force_CoM COMMAND testCoMForceTask)
-add_test(NAME OpenSoT_task_force_CoP COMMAND testCoPForceTask)
-add_test(NAME OpenSoT_task_force_DesiredWrench COMMAND testDesiredWrenchTask)
+#add_test(NAME OpenSoT_task_force_CoP COMMAND testCoPForceTask)
+#add_test(NAME OpenSoT_task_force_DesiredWrench COMMAND testDesiredWrenchTask)
 add_test(NAME OpenSoT_task_velocity_CoM COMMAND testCoMVelocityTask)
 add_test(NAME OpenSoT_task_velocity_Interaction COMMAND testInteractionVelocityTask)
 add_test(NAME OpenSoT_task_velocity_Manipulability COMMAND testManipulabilityTask)

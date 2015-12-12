@@ -494,7 +494,7 @@ TEST_F(testInteractionTask, testInteractionTask_wrenchSimulation) {
     }
     std::ofstream file2;
     std::string file_name2 = "testCoMForce_wrenchMeasured4.m";
-    file2.open(file_name2);
+    file2.open(file_name2.c_str());
     file2<<"wrench_measured_lankle_rankle = ["<<std::endl;
     for(unsigned int i = 0; i < wrench_measured.size(); ++i)
         file2<<wrench_measured[i].toString()<<std::endl;
@@ -503,7 +503,7 @@ TEST_F(testInteractionTask, testInteractionTask_wrenchSimulation) {
 
     std::ofstream file5;
     std::string file_name5 = "testCoMForce_wrenchDesired4.m";
-    file5.open(file_name5);
+    file5.open(file_name5.c_str());
     file5<<"wrench_desired_lankle_rankle = ["<<std::endl;
     for(unsigned int i = 0; i < wrench_desired.size(); ++i)
         file5<<wrench_desired[i].toString()<<std::endl;

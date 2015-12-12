@@ -166,16 +166,6 @@ yarp::sig::Vector CoM::getActualVelocity() const
     return _actualVelocity;
 }
 
-std::string OpenSoT::tasks::force::CoM::getBaseLink()
-{
-    return BASE_LINK_COM;
-}
-
-std::string OpenSoT::tasks::force::CoM::getDistalLink()
-{
-    return DISTAL_LINK_COM;
-}
-
 void CoM::update_b()
 {
     yarp::sig::Vector acceleration_ref = _desiredAcceleration +

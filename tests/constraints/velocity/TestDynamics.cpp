@@ -16,6 +16,14 @@
 using namespace OpenSoT::constraints::velocity;
 using namespace yarp::math;
 
+template <typename T>
+string ToString(T val)
+{
+    stringstream stream;
+    stream << val;
+    return stream.str();
+}
+
 namespace{
 
 class testDynamicsConstr : public ::testing::Test {
@@ -361,18 +369,18 @@ for(unsigned int j = 0; j < 2; ++j){
     }
 
     std::ofstream file1;
-    std::string file_name = "testDynamics_torque_exp_"+std::to_string(j)+"_left_arm.m";
-    file1.open(file_name);
+    std::string file_name = "testDynamics_torque_exp_"+ToString(j)+"_left_arm.m";
+    file1.open(file_name.c_str());
     file1<<"tau_"<<j<<" = ["<<std::endl;
 
     std::ofstream file2;
-    file_name = "testDynamics_cartesian_error_exp_"+std::to_string(j)+"_left_arm.m";
-    file2.open(file_name);
+    file_name = "testDynamics_cartesian_error_exp_"+ToString(j)+"_left_arm.m";
+    file2.open(file_name.c_str());
     file2<<"cartesian_error_"<<j<<" = ["<<std::endl;
 
     std::ofstream file3;
-    file_name = "testDynamics_computed_vel_exp_"+std::to_string(j)+"_left_arm.m";
-    file3.open(file_name);
+    file_name = "testDynamics_computed_vel_exp_"+ToString(j)+"_left_arm.m";
+    file3.open(file_name.c_str());
     file3<<"computed_vel_"<<j<<" = ["<<std::endl;
 
     for(unsigned int i = 0; i < sensed_torque_exp.size(); ++i){
@@ -679,19 +687,19 @@ TEST_F(testDynamicsConstr, testConstraintWithContacts) {
     }
 
     std::ofstream file1;
-    std::string file_name = "testDynamics_torque_all"+std::to_string(j)+".m";
-    file1.open(file_name);
-    file1<<"tau"+std::to_string(j)+" = ["<<std::endl;
+    std::string file_name = "testDynamics_torque_all"+ToString(j)+".m";
+    file1.open(file_name.c_str());
+    file1<<"tau"+ToString(j)+" = ["<<std::endl;
 
     std::ofstream file2;
-    file_name = "testDynamics_cartesian_error_legsINcontacts_left_right_arm"+std::to_string(j)+".m";
-    file2.open(file_name);
-    file2<<"cartesian_error"+std::to_string(j)+" = ["<<std::endl;
+    file_name = "testDynamics_cartesian_error_legsINcontacts_left_right_arm"+ToString(j)+".m";
+    file2.open(file_name.c_str());
+    file2<<"cartesian_error"+ToString(j)+" = ["<<std::endl;
 
     std::ofstream file3;
-    file_name = "testDynamics_computed_vel_legsINcontacts_all"+std::to_string(j)+".m";
-    file3.open(file_name);
-    file3<<"computed_vel"+std::to_string(j)+" = ["<<std::endl;
+    file_name = "testDynamics_computed_vel_legsINcontacts_all"+ToString(j)+".m";
+    file3.open(file_name.c_str());
+    file3<<"computed_vel"+ToString(j)+" = ["<<std::endl;
 
     for(unsigned int i = 0; i < sensed_torque_exp.size(); ++i){
         yarp::sig::Vector tau = sensed_torque_exp[i];

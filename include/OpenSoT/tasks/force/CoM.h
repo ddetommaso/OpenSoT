@@ -31,16 +31,14 @@
         namespace force {
 
             /**
-             * @brief The CoM class computes the wrench distribution all over the contacts to exert a certain
-             * force on the COM. The resultants are the (reaction) wrench in sensor frame expressed in world
+             * @brief The CoM class computes the force distribution all over the contacts to exert a certain
+             * force on the COM. The resultants are the (reaction) forces in contacts frame expressed in contacts
+             * frame
              */
             class CoM : public Task < yarp::sig::Matrix, yarp::sig::Vector > {
             public:
                 typedef boost::shared_ptr<CoM> Ptr;
             private:
-                #define BASE_LINK_COM "world"
-                #define DISTAL_LINK_COM "CoM"
-
                 iDynUtils& _robot;
 
                 /**
@@ -108,17 +106,6 @@
 
                 yarp::sig::Vector getActualVelocity() const;
 
-                /**
-                 * @brief getBaseLink an utility function that always returns "world"
-                 * @return "world"
-                 */
-                std::string getBaseLink();
-
-                /**
-                 * @brief getDistalLink an utility function that always
-                 * @return
-                 */
-                std::string getDistalLink();
 
                 void setLambda(double lambda, double lambda2);
 

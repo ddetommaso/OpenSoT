@@ -29,7 +29,7 @@ public:
             data.reserve(size);
 
         std::string file_name = "testCoMForce_" + name + ".m";
-        file.open(file_name);
+        file.open(file_name.c_str());
         file<<name<<" = ["<<std::endl;
     }
 
@@ -855,7 +855,7 @@ TEST_F(testForceCoM, testForceCoM3) {
     }
     std::ofstream file2;
     std::string file_name2 = "testCoMForce_wrenchMeasured3.m";
-    file2.open(file_name2);
+    file2.open(file_name2.c_str());
     file2<<"wrench_measured_lankle_rankle = ["<<std::endl;
     for(unsigned int i = 0; i < wrench_measured.size(); ++i)
         file2<<wrench_measured[i].toString()<<std::endl;
@@ -864,7 +864,7 @@ TEST_F(testForceCoM, testForceCoM3) {
 
     std::ofstream file5;
     std::string file_name5 = "testCoMForce_wrenchDesired3.m";
-    file5.open(file_name5);
+    file5.open(file_name5.c_str());
     file5<<"wrench_desired_lankle_rankle = ["<<std::endl;
     for(unsigned int i = 0; i < wrench_desired.size(); ++i)
         file5<<wrench_desired[i].toString()<<std::endl;
@@ -873,7 +873,7 @@ TEST_F(testForceCoM, testForceCoM3) {
 
     std::ofstream file3;
     std::string file_name3 = "testCoMForce_com3.m";
-    file3.open(file_name3);
+    file3.open(file_name3.c_str());
     file3<<"com = ["<<std::endl;
     for(unsigned int i = 0; i < com.size(); ++i)
         file3<<com[i].toString()<<std::endl;
@@ -882,7 +882,7 @@ TEST_F(testForceCoM, testForceCoM3) {
 
     std::ofstream file4;
     std::string file_name4 = "testCoMForce_com_d3.m";
-    file4.open(file_name4);
+    file4.open(file_name4.c_str());
     file4<<"com_d = ["<<std::endl;
     for(unsigned int i = 0; i < com_d.size(); ++i)
         file4<<com_d[i].toString()<<std::endl;

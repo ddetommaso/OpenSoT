@@ -15,7 +15,6 @@
     namespace constraints {
         namespace force {
 
-            
             class FrictionCone: public Constraint<yarp::sig::Matrix, yarp::sig::Vector> {
             public:
                 typedef boost::shared_ptr<FrictionCone> Ptr;
