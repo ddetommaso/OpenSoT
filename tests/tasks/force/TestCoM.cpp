@@ -154,428 +154,428 @@ TEST_F(testForceCoM, testForceCoM1) {
 
 }
 
-//#if OPENSOT_COMPILE_SIMULATION_TESTS
+#if OPENSOT_COMPILE_SIMULATION_TESTS
 
 using namespace yarp::sig;
 using namespace OpenSoT;
 
-TEST_F(testForceCoM, testForceCoM2) {
-//    int argc = 0;
-//    char *argv[] = {""};
-//    ros::init(argc, argv, "testForceCoM2");
-//    //ROS Related stuffs
-//    ros::NodeHandle n;
-//    ros::Publisher new_world_pub;
-//    new_world_pub = n.advertise<geometry_msgs::TransformStamped>("/anchor_to_world_pose", 1000);
+//TEST_F(testForceCoM, testForceCoM2) {
+////    int argc = 0;
+////    char *argv[] = {""};
+////    ros::init(argc, argv, "testForceCoM2");
+////    //ROS Related stuffs
+////    ros::NodeHandle n;
+////    ros::Publisher new_world_pub;
+////    new_world_pub = n.advertise<geometry_msgs::TransformStamped>("/anchor_to_world_pose", 1000);
 
 
-    // Start YARP Server
-    tests_utils::startYarpServer();
-    // Load a world
-    //std::string world_path = std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/coman.world";
-    std::string world_path = std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/block.world";
-    if(OPENSOT_SIMULATION_TESTS_VISUALIZATION)
-        tests_utils::startGazebo(world_path);
-    else
-        tests_utils::startGZServer(world_path);
-    sleep(4);
+//    // Start YARP Server
+//    tests_utils::startYarpServer();
+//    // Load a world
+//    //std::string world_path = std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/coman.world";
+//    std::string world_path = std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/block.world";
+//    if(OPENSOT_SIMULATION_TESTS_VISUALIZATION)
+//        tests_utils::startGazebo(world_path);
+//    else
+//        tests_utils::startGZServer(world_path);
+//    sleep(4);
 
-//    //WAIT
-//    cin.get();
+////    //WAIT
+////    cin.get();
 
-    //To control the robot we need RobotUtils
-    RobotUtils coman_robot("testConstraint",
-                     "coman",
-                     std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/coman.urdf",
-                     std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/coman.srdf");
+//    //To control the robot we need RobotUtils
+//    RobotUtils coman_robot("testConstraint",
+//                     "coman",
+//                     std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/coman.urdf",
+//                     std::string(OPENSOT_TESTS_ROBOTS_DIR)+"coman/coman.srdf");
 
-    yarp::sig::Vector q = getGoodInitialPosition(coman_robot.idynutils);
-    q[coman_robot.idynutils.left_leg.joint_numbers[5]] += -20.0*M_PI/180.0;
-    q[coman_robot.idynutils.right_leg.joint_numbers[5]] += -20.0*M_PI/180.0;
+//    yarp::sig::Vector q = getGoodInitialPosition(coman_robot.idynutils);
+//    q[coman_robot.idynutils.left_leg.joint_numbers[5]] += -20.0*M_PI/180.0;
+//    q[coman_robot.idynutils.right_leg.joint_numbers[5]] += -20.0*M_PI/180.0;
 
-    logger q_d("q_d");
-    q_d.log(q);
+//    logger q_d("q_d");
+//    q_d.log(q);
 
-    //Homing
-    std::vector<iDynUtils::ft_measure> _ft_measurements;
-    RobotUtils::ftPtrMap ft_sensors = coman_robot.getftSensors();
-    for(RobotUtils::ftPtrMap::iterator it = ft_sensors.begin();
-        it != ft_sensors.end(); it++)
-    {
-        iDynUtils::ft_measure ft_measurement;
-        ft_measurement.first = it->second->getReferenceFrame();
-        yarp::sig::Vector dummy_measure(6 ,0.0);
-        ft_measurement.second = dummy_measure;
+//    //Homing
+//    std::vector<iDynUtils::ft_measure> _ft_measurements;
+//    RobotUtils::ftPtrMap ft_sensors = coman_robot.getftSensors();
+//    for(RobotUtils::ftPtrMap::iterator it = ft_sensors.begin();
+//        it != ft_sensors.end(); it++)
+//    {
+//        iDynUtils::ft_measure ft_measurement;
+//        ft_measurement.first = it->second->getReferenceFrame();
+//        yarp::sig::Vector dummy_measure(6 ,0.0);
+//        ft_measurement.second = dummy_measure;
 
-        _ft_measurements.push_back(ft_measurement);
-    }
+//        _ft_measurements.push_back(ft_measurement);
+//    }
 
-    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, true);
-    coman_robot.idynutils.setFloatingBaseLink(coman_robot.idynutils.left_leg.end_effector_name);
-    coman_robot.setPositionMode();
-    double speed = 0.8;
-    yarp::sig::Vector legs_speed(6,speed);
-    legs_speed[3] = 2.0*legs_speed[3];
-    coman_robot.left_leg.setReferenceSpeeds(legs_speed);
-    coman_robot.right_leg.setReferenceSpeeds(legs_speed);
-    coman_robot.left_arm.setReferenceSpeed(speed);
-    coman_robot.right_arm.setReferenceSpeed(speed);
-    coman_robot.torso.setReferenceSpeed(speed);
-    coman_robot.move(q);
+//    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, true);
+//    coman_robot.idynutils.setFloatingBaseLink(coman_robot.idynutils.left_leg.end_effector_name);
+//    coman_robot.setPositionMode();
+//    double speed = 0.8;
+//    yarp::sig::Vector legs_speed(6,speed);
+//    legs_speed[3] = 2.0*legs_speed[3];
+//    coman_robot.left_leg.setReferenceSpeeds(legs_speed);
+//    coman_robot.right_leg.setReferenceSpeeds(legs_speed);
+//    coman_robot.left_arm.setReferenceSpeed(speed);
+//    coman_robot.right_arm.setReferenceSpeed(speed);
+//    coman_robot.torso.setReferenceSpeed(speed);
+//    coman_robot.move(q);
 
-    sleep(5);
-    legs_speed = legs_speed/5.0;
-    coman_robot.left_leg.setReferenceSpeeds(legs_speed);
-    coman_robot.right_leg.setReferenceSpeeds(legs_speed);
+//    sleep(5);
+//    legs_speed = legs_speed/5.0;
+//    coman_robot.left_leg.setReferenceSpeeds(legs_speed);
+//    coman_robot.right_leg.setReferenceSpeeds(legs_speed);
 
-    q[coman_robot.idynutils.left_leg.joint_numbers[5]] += -10.0*M_PI/180.0;
-    q[coman_robot.idynutils.right_leg.joint_numbers[5]] += -10.0*M_PI/180.0;
-    coman_robot.move(q);
-    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, true);
+//    q[coman_robot.idynutils.left_leg.joint_numbers[5]] += -10.0*M_PI/180.0;
+//    q[coman_robot.idynutils.right_leg.joint_numbers[5]] += -10.0*M_PI/180.0;
+//    coman_robot.move(q);
+//    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, true);
 
-    q_d.log(q);
-    //Set Up SoT
-    sleep(10);
-    coman_robot.setPositionDirectMode();
-    sleep(2);
-    q = coman_robot.sensePosition();
+//    q_d.log(q);
+//    //Set Up SoT
+//    sleep(10);
+//    coman_robot.setPositionDirectMode();
+//    sleep(2);
+//    q = coman_robot.sensePosition();
 
-    std::string anchor; KDL::Frame anchor_T_World;
-    coman_robot.idynutils.getWorldPose(anchor_T_World, anchor);
-    anchor_T_World.M.DoRotY(20.0*M_PI/180.0);
-    coman_robot.idynutils.setAnchor_T_World(anchor_T_World);
-    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, true);
+//    std::string anchor; KDL::Frame anchor_T_World;
+//    coman_robot.idynutils.getWorldPose(anchor_T_World, anchor);
+//    anchor_T_World.M.DoRotY(20.0*M_PI/180.0);
+//    coman_robot.idynutils.setAnchor_T_World(anchor_T_World);
+//    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, true);
 
-//    //Publish world in ros
-//    geometry_msgs::TransformStamped T;
-//    T.header.frame_id = "l_sole";
-//    T.child_frame_id = "world";
-//    KDL::Frame anchorKDL = coman_robot.idynutils.getAnchor_T_World();
-//    double qx,qy,qz,qw;
-//    anchorKDL.M.GetQuaternion(qx,qy,qz,qw);
-//    T.transform.rotation.x = qx;
-//    T.transform.rotation.y = qy;
-//    T.transform.rotation.z = qz;
-//    T.transform.rotation.w = qw;
-//    T.transform.translation.x = anchorKDL.p[0];
-//    T.transform.translation.y = anchorKDL.p[1];
-//    T.transform.translation.z = anchorKDL.p[2];
-//    new_world_pub.publish(T);
-//    cin.get();
-//    ///////////////////////////////////////
+////    //Publish world in ros
+////    geometry_msgs::TransformStamped T;
+////    T.header.frame_id = "l_sole";
+////    T.child_frame_id = "world";
+////    KDL::Frame anchorKDL = coman_robot.idynutils.getAnchor_T_World();
+////    double qx,qy,qz,qw;
+////    anchorKDL.M.GetQuaternion(qx,qy,qz,qw);
+////    T.transform.rotation.x = qx;
+////    T.transform.rotation.y = qy;
+////    T.transform.rotation.z = qz;
+////    T.transform.rotation.w = qw;
+////    T.transform.translation.x = anchorKDL.p[0];
+////    T.transform.translation.y = anchorKDL.p[1];
+////    T.transform.translation.z = anchorKDL.p[2];
+////    new_world_pub.publish(T);
+////    cin.get();
+////    ///////////////////////////////////////
 
-    std::vector<std::string> ft_in_contact;
-    OpenSoT::constraints::velocity::Dynamics::crawlLinks(coman_robot.idynutils.getForceTorqueFrameNames(),
-                                        coman_robot.idynutils.getLinksInContact(),
-                                        coman_robot.idynutils,
-                                        ft_in_contact);
-
-
-    //SET UP FORCE OPTIMIZATION
-    yarp::sig::Vector wrench_d(12,0.0);
-    OpenSoT::tasks::force::CoM::Ptr force_com_task(
-                new OpenSoT::tasks::force::CoM(wrench_d, coman_robot.idynutils));
-    force_com_task->setLambda(1.0, 0.1);
-
-    std::cout<<"INITIAL REF = ["<<force_com_task->getReference().toString()<<std::endl;
-    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
+//    std::vector<std::string> ft_in_contact;
+//    OpenSoT::constraints::velocity::Dynamics::crawlLinks(coman_robot.idynutils.getForceTorqueFrameNames(),
+//                                        coman_robot.idynutils.getLinksInContact(),
+//                                        coman_robot.idynutils,
+//                                        ft_in_contact);
 
 
-    std::map<std::string, double> mu;
-    for(unsigned int i = 0; i < ft_in_contact.size(); ++i)
-        mu[ft_in_contact[i]] = 0.1;
-
-    OpenSoT::constraints::force::FrictionCone::Ptr friction_cones_constraint(
-                new OpenSoT::constraints::force::FrictionCone(wrench_d, coman_robot.idynutils,mu));
-
-    //force_com_task->getConstraints().push_back(friction_cones_constraint);
-
-    OpenSoT::solvers::QPOases_sot::Stack stack_of_tasks_force;
-    stack_of_tasks_force.push_back(force_com_task);
-    OpenSoT::solvers::QPOases_sot::Ptr sot_force(
-                new OpenSoT::solvers::QPOases_sot(stack_of_tasks_force,2E10));
-    sot_force->solve(wrench_d);
-
-    //This is the wrench in sensor frame expressed in world, we have to tranform it!
-    yarp::sig::Vector wrench_d_lankle = -1.0*yarp::math::cat(
-                wrench_d.subVector(0,2),wrench_d.subVector(6,8));
-    yarp::sig::Vector wrench_d_rankle = -1.0*yarp::math::cat(
-                wrench_d.subVector(3,5),wrench_d.subVector(9,11));
-    std::cout<<"wrench_d_lankle = ["<<wrench_d_lankle.toString()<<"] expressed in contact"<<std::endl;
-    std::cout<<"wrench_d_rankle = ["<<wrench_d_rankle.toString()<<"] expressed in contact"<<std::endl;
-
-    KDL::Wrench wrench_d_lankle_KDL;
-    cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_lankle, wrench_d_lankle_KDL);
-    KDL::Wrench wrench_d_rankle_KDL;
-    cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_rankle, wrench_d_rankle_KDL);
-
-
-    KDL::Frame base_link_T_l_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
-        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-        coman_robot.idynutils.iDyn3_model.getLinkIndex("l_sole"));
-    KDL::Frame base_link_T_r_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
-        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-        coman_robot.idynutils.iDyn3_model.getLinkIndex("r_sole"));
-    wrench_d_lankle_KDL = base_link_T_l_contact.M*wrench_d_lankle_KDL;
-    wrench_d_rankle_KDL = base_link_T_r_contact.M*wrench_d_rankle_KDL;
-    cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
-    cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
-
-
-    std::cout<<"wrench_d_lankle = ["<<wrench_d_lankle.toString()<<"] expressed in Waist"<<std::endl;
-    std::cout<<"wrench_d_rankle = ["<<wrench_d_rankle.toString()<<"] expressed in Waist"<<std::endl;
-
-    //cin.get();
-
-    // BOUNDS
-    Constraint<Matrix, Vector>::ConstraintPtr boundsJointLimits =
-            constraints::velocity::JointLimits::ConstraintPtr(
-                new constraints::velocity::JointLimits(
-                    q,
-                    coman_robot.idynutils.iDyn3_model.getJointBoundMax(),
-                    coman_robot.idynutils.iDyn3_model.getJointBoundMin()));
-
-    double dT = 0.005;
-    Constraint<Matrix, Vector>::ConstraintPtr boundsJointVelocity =
-            constraints::velocity::VelocityLimits::ConstraintPtr(
-                new constraints::velocity::VelocityLimits(0.4, dT,q.size()));
-
-    constraints::Aggregated::Ptr bounds = OpenSoT::constraints::Aggregated::Ptr(
-                new constraints::Aggregated(boundsJointLimits, boundsJointVelocity,
-                                            q.size()));
+//    //SET UP FORCE OPTIMIZATION
+//    yarp::sig::Vector wrench_d(12,0.0);
+//    OpenSoT::tasks::force::CoM::Ptr force_com_task(
+//                new OpenSoT::tasks::force::CoM(wrench_d, coman_robot.idynutils));
+//    force_com_task->setLambda(1.0, 0.1);
 
 //    std::cout<<"INITIAL REF = ["<<force_com_task->getReference().toString()<<std::endl;
 //    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
 
 
-    RobotUtils::ftReadings ft_readings = coman_robot.senseftSensors();
-    std::vector<yarp::sig::Vector> filter_ft;
-    for(unsigned int i = 0; i < _ft_measurements.size(); ++i){
-        _ft_measurements[i].second = -1.0*ft_readings[_ft_measurements[i].first];
-        filter_ft.push_back(-1.0*ft_readings[_ft_measurements[i].first]);}
-    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, false);
+//    std::map<std::string, double> mu;
+//    for(unsigned int i = 0; i < ft_in_contact.size(); ++i)
+//        mu[ft_in_contact[i]] = 0.1;
+
+//    OpenSoT::constraints::force::FrictionCone::Ptr friction_cones_constraint(
+//                new OpenSoT::constraints::force::FrictionCone(wrench_d, coman_robot.idynutils,mu));
+
+//    //force_com_task->getConstraints().push_back(friction_cones_constraint);
+
+//    OpenSoT::solvers::QPOases_sot::Stack stack_of_tasks_force;
+//    stack_of_tasks_force.push_back(force_com_task);
+//    OpenSoT::solvers::QPOases_sot::Ptr sot_force(
+//                new OpenSoT::solvers::QPOases_sot(stack_of_tasks_force,2E10));
+//    sot_force->solve(wrench_d);
+
+//    //This is the wrench in sensor frame expressed in world, we have to tranform it!
+//    yarp::sig::Vector wrench_d_lankle = -1.0*yarp::math::cat(
+//                wrench_d.subVector(0,2),wrench_d.subVector(6,8));
+//    yarp::sig::Vector wrench_d_rankle = -1.0*yarp::math::cat(
+//                wrench_d.subVector(3,5),wrench_d.subVector(9,11));
+//    std::cout<<"wrench_d_lankle = ["<<wrench_d_lankle.toString()<<"] expressed in contact"<<std::endl;
+//    std::cout<<"wrench_d_rankle = ["<<wrench_d_rankle.toString()<<"] expressed in contact"<<std::endl;
+
+//    KDL::Wrench wrench_d_lankle_KDL;
+//    cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_lankle, wrench_d_lankle_KDL);
+//    KDL::Wrench wrench_d_rankle_KDL;
+//    cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_rankle, wrench_d_rankle_KDL);
 
 
-//    std::cout<<"INITIAL REF = ["<<force_com_task->getReference().toString()<<std::endl;
+//    KDL::Frame base_link_T_l_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex("l_sole"));
+//    KDL::Frame base_link_T_r_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//        coman_robot.idynutils.iDyn3_model.getLinkIndex("r_sole"));
+//    wrench_d_lankle_KDL = base_link_T_l_contact.M*wrench_d_lankle_KDL;
+//    wrench_d_rankle_KDL = base_link_T_r_contact.M*wrench_d_rankle_KDL;
+//    cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
+//    cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
+
+
+//    std::cout<<"wrench_d_lankle = ["<<wrench_d_lankle.toString()<<"] expressed in Waist"<<std::endl;
+//    std::cout<<"wrench_d_rankle = ["<<wrench_d_rankle.toString()<<"] expressed in Waist"<<std::endl;
+
+//    //cin.get();
+
+//    // BOUNDS
+//    Constraint<Matrix, Vector>::ConstraintPtr boundsJointLimits =
+//            constraints::velocity::JointLimits::ConstraintPtr(
+//                new constraints::velocity::JointLimits(
+//                    q,
+//                    coman_robot.idynutils.iDyn3_model.getJointBoundMax(),
+//                    coman_robot.idynutils.iDyn3_model.getJointBoundMin()));
+
+//    double dT = 0.005;
+//    Constraint<Matrix, Vector>::ConstraintPtr boundsJointVelocity =
+//            constraints::velocity::VelocityLimits::ConstraintPtr(
+//                new constraints::velocity::VelocityLimits(0.4, dT,q.size()));
+
+//    constraints::Aggregated::Ptr bounds = OpenSoT::constraints::Aggregated::Ptr(
+//                new constraints::Aggregated(boundsJointLimits, boundsJointVelocity,
+//                                            q.size()));
+
+////    std::cout<<"INITIAL REF = ["<<force_com_task->getReference().toString()<<std::endl;
+////    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
+
+
+//    RobotUtils::ftReadings ft_readings = coman_robot.senseftSensors();
+//    std::vector<yarp::sig::Vector> filter_ft;
+//    for(unsigned int i = 0; i < _ft_measurements.size(); ++i){
+//        _ft_measurements[i].second = -1.0*ft_readings[_ft_measurements[i].first];
+//        filter_ft.push_back(-1.0*ft_readings[_ft_measurements[i].first]);}
+//    coman_robot.idynutils.updateiDyn3Model(q, _ft_measurements, false);
+
+
+////    std::cout<<"INITIAL REF = ["<<force_com_task->getReference().toString()<<std::endl;
+////    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
+
+//    yarp::sig::Matrix C(6,6); C = C.eye();
+//    for(unsigned int i = 0; i < 3; ++i)
+//    {
+//        C(i,i) *= 1E-5;
+//        C(i+3,i+3) *=3E-5;
+//    }
+
+//    tasks::velocity::Interaction::Ptr interaction_lankle_task(
+//                new tasks::velocity::Interaction("interaction::l_sole",
+//                                q, coman_robot.idynutils, "l_sole", "Waist", "l_leg_ft"));
+//    interaction_lankle_task->setCompliance(C);
+//    interaction_lankle_task->setReferenceWrench(wrench_d_lankle);
+//    interaction_lankle_task->update(q);
+
+//    tasks::velocity::Interaction::Ptr interaction_rankle_task(
+//                new tasks::velocity::Interaction("interaction::r_sole",
+//                                q, coman_robot.idynutils, "r_sole", "Waist", "r_leg_ft"));
+//    interaction_rankle_task->setCompliance(C);
+//    interaction_rankle_task->setReferenceWrench(wrench_d_rankle);
+//    interaction_rankle_task->update(q);
+
+//    tasks::velocity::CoM::Ptr com_task_upper_body(new tasks::velocity::CoM(q, coman_robot.idynutils));
+//    std::vector<bool> joint_mask = com_task_upper_body->getActiveJointsMask();
+//    for(unsigned int i = 0; i < coman_robot.idynutils.left_leg.getNrOfDOFs(); ++i){
+//        joint_mask[coman_robot.idynutils.left_leg.joint_numbers[i]] = false;
+//        joint_mask[coman_robot.idynutils.right_leg.joint_numbers[i]] = false;}
+//    joint_mask[coman_robot.idynutils.torso.joint_numbers[0]] = false;
+//    joint_mask[coman_robot.idynutils.torso.joint_numbers[1]] = false;
+//    joint_mask[coman_robot.idynutils.torso.joint_numbers[2]] = false;
+//    com_task_upper_body->setActiveJointsMask(joint_mask);
+//    yarp::sig::Matrix W_com(3,3); W_com.eye(); W_com *= 0.1;
+//    com_task_upper_body->setWeight(W_com);
+//    com_task_upper_body->update(q);
+
+//    std::list<tasks::velocity::Cartesian::TaskPtr> aggregated_list;
+//    aggregated_list.push_back(interaction_lankle_task);
+//    aggregated_list.push_back(interaction_rankle_task);
+//    //aggregated_list.push_back(com_task_upper_body);
+//    Task<Matrix, Vector>::TaskPtr taskAggregatedHighest =
+//            tasks::Aggregated::TaskPtr(
+//       new tasks::Aggregated(aggregated_list,q.size()));
+
+//    tasks::velocity::Postural::Ptr postural_task=
+//            tasks::velocity::Postural::Ptr(new tasks::velocity::Postural(q));
+
+//    solvers::QPOases_sot::Stack stack_of_tasks;
+//    stack_of_tasks.push_back(taskAggregatedHighest);
+//    stack_of_tasks.push_back(postural_task);
+
+//    Solver<yarp::sig::Matrix, yarp::sig::Vector>::SolverPtr sot;
+//    sot = solvers::QPOases_sot::Ptr(new solvers::QPOases_sot(stack_of_tasks, bounds, 1E10));
+
+//    yarp::sig::Vector dq(q.size(), 0.0);
+//    if(sot->solve(dq)){
+//        q += dq;}
+//    coman_robot.move(q);
+//    q_d.log(q);
+
+
+//    yarp::sig::Vector wrench(wrench_d.size(), 0.0);
+//    int steps = int(1.5*M_PI*1000) + 1000;
+
+
+//    yarp::sig::Vector ref = force_com_task->getReference();
+//    std::cout<<"INITIAL REF = ["<<ref.toString()<<std::endl;
 //    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
 
-    yarp::sig::Matrix C(6,6); C = C.eye();
-    for(unsigned int i = 0; i < 3; ++i)
-    {
-        C(i,i) *= 1E-5;
-        C(i+3,i+3) *=3E-5;
-    }
-
-    tasks::velocity::Interaction::Ptr interaction_lankle_task(
-                new tasks::velocity::Interaction("interaction::l_sole",
-                                q, coman_robot.idynutils, "l_sole", "Waist", "l_leg_ft"));
-    interaction_lankle_task->setCompliance(C);
-    interaction_lankle_task->setReferenceWrench(wrench_d_lankle);
-    interaction_lankle_task->update(q);
-
-    tasks::velocity::Interaction::Ptr interaction_rankle_task(
-                new tasks::velocity::Interaction("interaction::r_sole",
-                                q, coman_robot.idynutils, "r_sole", "Waist", "r_leg_ft"));
-    interaction_rankle_task->setCompliance(C);
-    interaction_rankle_task->setReferenceWrench(wrench_d_rankle);
-    interaction_rankle_task->update(q);
-
-    tasks::velocity::CoM::Ptr com_task_upper_body(new tasks::velocity::CoM(q, coman_robot.idynutils));
-    std::vector<bool> joint_mask = com_task_upper_body->getActiveJointsMask();
-    for(unsigned int i = 0; i < coman_robot.idynutils.left_leg.getNrOfDOFs(); ++i){
-        joint_mask[coman_robot.idynutils.left_leg.joint_numbers[i]] = false;
-        joint_mask[coman_robot.idynutils.right_leg.joint_numbers[i]] = false;}
-    joint_mask[coman_robot.idynutils.torso.joint_numbers[0]] = false;
-    joint_mask[coman_robot.idynutils.torso.joint_numbers[1]] = false;
-    joint_mask[coman_robot.idynutils.torso.joint_numbers[2]] = false;
-    com_task_upper_body->setActiveJointsMask(joint_mask);
-    yarp::sig::Matrix W_com(3,3); W_com.eye(); W_com *= 0.1;
-    com_task_upper_body->setWeight(W_com);
-    com_task_upper_body->update(q);
-
-    std::list<tasks::velocity::Cartesian::TaskPtr> aggregated_list;
-    aggregated_list.push_back(interaction_lankle_task);
-    aggregated_list.push_back(interaction_rankle_task);
-    //aggregated_list.push_back(com_task_upper_body);
-    Task<Matrix, Vector>::TaskPtr taskAggregatedHighest =
-            tasks::Aggregated::TaskPtr(
-       new tasks::Aggregated(aggregated_list,q.size()));
-
-    tasks::velocity::Postural::Ptr postural_task=
-            tasks::velocity::Postural::Ptr(new tasks::velocity::Postural(q));
-
-    solvers::QPOases_sot::Stack stack_of_tasks;
-    stack_of_tasks.push_back(taskAggregatedHighest);
-    stack_of_tasks.push_back(postural_task);
-
-    Solver<yarp::sig::Matrix, yarp::sig::Vector>::SolverPtr sot;
-    sot = solvers::QPOases_sot::Ptr(new solvers::QPOases_sot(stack_of_tasks, bounds, 1E10));
-
-    yarp::sig::Vector dq(q.size(), 0.0);
-    if(sot->solve(dq)){
-        q += dq;}
-    coman_robot.move(q);
-    q_d.log(q);
+//// #####LOG####
+//    logger com_d("com_d");
+//    logger dcom_d("dcom_d");
+//    logger com_force_b("com_force_b", steps+1);
+//    logger com("com", steps);
+//    com_force_b.log(force_com_task->getb());
+//    logger com_force_wrench_d("com_force_wrench_d",steps+1);
+//    com_force_wrench_d.log(wrench_d); //[f_ll f_rl tau_ll tau_rl]
+//    logger interaction_lankle_task_deltax("interaction_lankle_task_deltax", steps+1);
+//    interaction_lankle_task_deltax.log(interaction_lankle_task->getDeltaX());
+//    logger interaction_rankle_task_deltax("interaction_rankle_task_deltax", steps+1);
+//    interaction_rankle_task_deltax.log(interaction_rankle_task->getDeltaX());
+//    logger interaction_lankle_task_wrench_error("interaction_lankle_task_wrench_error", steps+1);
+//    interaction_lankle_task_wrench_error.log(interaction_lankle_task->getWrenchError());
+//    logger interaction_lankle_task_actual_wrench("interaction_lankle_task_actual_wrench", steps+1);
+//    interaction_lankle_task_actual_wrench.log(interaction_lankle_task->getActualWrench());
+//    logger interaction_lankle_desired_wrench("interaction_lankle_desired_wrench", steps+1);
+//    interaction_lankle_desired_wrench.log(interaction_lankle_task->getReferenceWrench());
+//    logger interaction_rankle_task_wrench_error("interaction_rankle_task_wrench_error", steps+1);
+//    interaction_rankle_task_wrench_error.log(interaction_rankle_task->getWrenchError());
+//// #################
 
 
-    yarp::sig::Vector wrench(wrench_d.size(), 0.0);
-    int steps = int(1.5*M_PI*1000) + 1000;
+//    for(unsigned int i = 0; i < steps; ++i)
+//    {
+//        double tic = yarp::os::Time::now();
 
-
-    yarp::sig::Vector ref = force_com_task->getReference();
-    std::cout<<"INITIAL REF = ["<<ref.toString()<<std::endl;
-    std::cout<<"INITIAL COM POSE = ["<<coman_robot.idynutils.iDyn3_model.getCOM().toString()<<std::endl;
-
-// #####LOG####
-    logger com_d("com_d");
-    logger dcom_d("dcom_d");
-    logger com_force_b("com_force_b", steps+1);
-    logger com("com", steps);
-    com_force_b.log(force_com_task->getb());
-    logger com_force_wrench_d("com_force_wrench_d",steps+1);
-    com_force_wrench_d.log(wrench_d); //[f_ll f_rl tau_ll tau_rl]
-    logger interaction_lankle_task_deltax("interaction_lankle_task_deltax", steps+1);
-    interaction_lankle_task_deltax.log(interaction_lankle_task->getDeltaX());
-    logger interaction_rankle_task_deltax("interaction_rankle_task_deltax", steps+1);
-    interaction_rankle_task_deltax.log(interaction_rankle_task->getDeltaX());
-    logger interaction_lankle_task_wrench_error("interaction_lankle_task_wrench_error", steps+1);
-    interaction_lankle_task_wrench_error.log(interaction_lankle_task->getWrenchError());
-    logger interaction_lankle_task_actual_wrench("interaction_lankle_task_actual_wrench", steps+1);
-    interaction_lankle_task_actual_wrench.log(interaction_lankle_task->getActualWrench());
-    logger interaction_lankle_desired_wrench("interaction_lankle_desired_wrench", steps+1);
-    interaction_lankle_desired_wrench.log(interaction_lankle_task->getReferenceWrench());
-    logger interaction_rankle_task_wrench_error("interaction_rankle_task_wrench_error", steps+1);
-    interaction_rankle_task_wrench_error.log(interaction_rankle_task->getWrenchError());
-// #################
-
-
-    for(unsigned int i = 0; i < steps; ++i)
-    {
-        double tic = yarp::os::Time::now();
-
-//        //Publish world in ros
-//        anchorKDL = coman_robot.idynutils.getAnchor_T_World();
-//        anchorKDL.M.GetQuaternion(qx,qy,qz,qw);
-//        T.transform.rotation.x = qx;
-//        T.transform.rotation.y = qy;
-//        T.transform.rotation.z = qz;
-//        T.transform.rotation.w = qw;
-//        T.transform.translation.x = anchorKDL.p[0];
-//        T.transform.translation.y = anchorKDL.p[1];
-//        T.transform.translation.z = anchorKDL.p[2];
-//        new_world_pub.publish(T);
-//        ///////////////////////////////////////
+////        //Publish world in ros
+////        anchorKDL = coman_robot.idynutils.getAnchor_T_World();
+////        anchorKDL.M.GetQuaternion(qx,qy,qz,qw);
+////        T.transform.rotation.x = qx;
+////        T.transform.rotation.y = qy;
+////        T.transform.rotation.z = qz;
+////        T.transform.rotation.w = qw;
+////        T.transform.translation.x = anchorKDL.p[0];
+////        T.transform.translation.y = anchorKDL.p[1];
+////        T.transform.translation.z = anchorKDL.p[2];
+////        new_world_pub.publish(T);
+////        ///////////////////////////////////////
 
 
 
-        com.log(coman_robot.idynutils.iDyn3_model.getCOM());
+//        com.log(coman_robot.idynutils.iDyn3_model.getCOM());
 
-        if(i <= M_PI*1000)
-        {
-            yarp::sig::Vector goal = ref;
-            goal(2) += (-0.05)*std::sin((i+M_PI)/1000.);
-            yarp::sig::Vector goal_before = ref;
-            if(i == 0)
-                goal_before(2) = 0.0;
-            else
-                goal_before(2) += (-0.05)*std::sin((i-1+M_PI)/1000.);
-            yarp::sig::Vector v(3,0.0);
-            if(i >= 1)
-                v(2)= (goal(2)-goal_before(2))/dT;
-            //force_com_task->setReference(goal,v);
-            com_task_upper_body->setReference(goal, v);
+//        if(i <= M_PI*1000)
+//        {
+//            yarp::sig::Vector goal = ref;
+//            goal(2) += (-0.05)*std::sin((i+M_PI)/1000.);
+//            yarp::sig::Vector goal_before = ref;
+//            if(i == 0)
+//                goal_before(2) = 0.0;
+//            else
+//                goal_before(2) += (-0.05)*std::sin((i-1+M_PI)/1000.);
+//            yarp::sig::Vector v(3,0.0);
+//            if(i >= 1)
+//                v(2)= (goal(2)-goal_before(2))/dT;
+//            //force_com_task->setReference(goal,v);
+//            com_task_upper_body->setReference(goal, v);
 
-            com_d.log(goal);
-            dcom_d.log(v);
-        }
-
-
-        ft_readings = coman_robot.senseftSensors();
-        for(unsigned int i = 0; i < _ft_measurements.size(); ++i){
-            filter_ft[i] += (-1.0*ft_readings[_ft_measurements[i].first]-filter_ft[i])*0.4;
-            _ft_measurements[i].second = filter_ft[i];}
-        coman_robot.idynutils.updateiDyn3Model(q, dq/dT, _ft_measurements, true);
+//            com_d.log(goal);
+//            dcom_d.log(v);
+//        }
 
 
-
-        force_com_task->update(wrench_d);
-        friction_cones_constraint->update(wrench_d);
-
-
-        if(sot_force->solve(wrench))
-            wrench_d = wrench;
-        else
-            std::cout<<"ERROR FORCE Optimization"<<std::endl;
-
-        com_force_b.log(force_com_task->getb());
-        com_force_wrench_d.log(wrench_d);
-
-        wrench_d_lankle = -1.0*yarp::math::cat(
-                    wrench_d.subVector(0,2),wrench_d.subVector(6,8));
-        wrench_d_rankle = -1.0*yarp::math::cat(
-                    wrench_d.subVector(3,5),wrench_d.subVector(9,11));
-
-        cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_lankle, wrench_d_lankle_KDL);
-        cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_rankle, wrench_d_rankle_KDL);
-
-        base_link_T_l_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
-            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-            coman_robot.idynutils.iDyn3_model.getLinkIndex("l_sole"));
-        base_link_T_r_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
-            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
-            coman_robot.idynutils.iDyn3_model.getLinkIndex("r_sole"));
-        wrench_d_lankle_KDL = base_link_T_l_contact.M*wrench_d_lankle_KDL;
-        wrench_d_rankle_KDL = base_link_T_r_contact.M*wrench_d_rankle_KDL;
-        cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
-        cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
+//        ft_readings = coman_robot.senseftSensors();
+//        for(unsigned int i = 0; i < _ft_measurements.size(); ++i){
+//            filter_ft[i] += (-1.0*ft_readings[_ft_measurements[i].first]-filter_ft[i])*0.4;
+//            _ft_measurements[i].second = filter_ft[i];}
+//        coman_robot.idynutils.updateiDyn3Model(q, dq/dT, _ft_measurements, true);
 
 
-        interaction_lankle_task->setReferenceWrench(wrench_d_lankle);
-        interaction_rankle_task->setReferenceWrench(wrench_d_rankle);
+
+//        force_com_task->update(wrench_d);
+//        friction_cones_constraint->update(wrench_d);
 
 
-        bounds->update(q);
-        taskAggregatedHighest->update(q);
-        postural_task->update(q);
+//        if(sot_force->solve(wrench))
+//            wrench_d = wrench;
+//        else
+//            std::cout<<"ERROR FORCE Optimization"<<std::endl;
 
-        interaction_lankle_task_deltax.log(interaction_lankle_task->getDeltaX());
-        interaction_lankle_task_wrench_error.log(interaction_lankle_task->getWrenchError());
-        interaction_rankle_task_deltax.log(interaction_rankle_task->getDeltaX());
-        interaction_rankle_task_wrench_error.log(interaction_rankle_task->getWrenchError());
-        interaction_lankle_task_actual_wrench.log(interaction_lankle_task->getActualWrench());
-        interaction_lankle_desired_wrench.log(interaction_lankle_task->getReferenceWrench());
+//        com_force_b.log(force_com_task->getb());
+//        com_force_wrench_d.log(wrench_d);
 
-        if(sot->solve(dq)){
-            q += dq;}
-        coman_robot.move(q);
-        q_d.log(q);
+//        wrench_d_lankle = -1.0*yarp::math::cat(
+//                    wrench_d.subVector(0,2),wrench_d.subVector(6,8));
+//        wrench_d_rankle = -1.0*yarp::math::cat(
+//                    wrench_d.subVector(3,5),wrench_d.subVector(9,11));
+
+//        cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_lankle, wrench_d_lankle_KDL);
+//        cartesian_utils::fromYarpVectortoKDLWrench(wrench_d_rankle, wrench_d_rankle_KDL);
+
+//        base_link_T_l_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex("l_sole"));
+//        base_link_T_r_contact = coman_robot.idynutils.iDyn3_model.getPositionKDL(
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex("Waist"),
+//            coman_robot.idynutils.iDyn3_model.getLinkIndex("r_sole"));
+//        wrench_d_lankle_KDL = base_link_T_l_contact.M*wrench_d_lankle_KDL;
+//        wrench_d_rankle_KDL = base_link_T_r_contact.M*wrench_d_rankle_KDL;
+//        cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_lankle_KDL, wrench_d_lankle);
+//        cartesian_utils::fromKDLWrenchtoYarpVector(wrench_d_rankle_KDL, wrench_d_rankle);
 
 
-        double toc = yarp::os::Time::now();
+//        interaction_lankle_task->setReferenceWrench(wrench_d_lankle);
+//        interaction_rankle_task->setReferenceWrench(wrench_d_rankle);
 
-        if((toc-tic) < dT)
-            yarp::os::Time::delay(dT - (toc-tic));
-        else
-            std::cout<<"we are too slow!"<<std::endl;
-    }
 
-    com_d.write();
-    dcom_d.write();
-    com.write();
-    com_force_b.write();
-    com_force_wrench_d.write();
-    interaction_lankle_task_deltax.write();
-    interaction_rankle_task_deltax.write();
-    interaction_lankle_task_wrench_error.write();
-    interaction_rankle_task_wrench_error.write();
-    q_d.write();
-    interaction_lankle_desired_wrench.write();
-    interaction_lankle_task_actual_wrench.write();
+//        bounds->update(q);
+//        taskAggregatedHighest->update(q);
+//        postural_task->update(q);
 
-    tests_utils::stopGazebo();
-    sleep(10);
-    tests_utils::stopYarpServer();
-}
+//        interaction_lankle_task_deltax.log(interaction_lankle_task->getDeltaX());
+//        interaction_lankle_task_wrench_error.log(interaction_lankle_task->getWrenchError());
+//        interaction_rankle_task_deltax.log(interaction_rankle_task->getDeltaX());
+//        interaction_rankle_task_wrench_error.log(interaction_rankle_task->getWrenchError());
+//        interaction_lankle_task_actual_wrench.log(interaction_lankle_task->getActualWrench());
+//        interaction_lankle_desired_wrench.log(interaction_lankle_task->getReferenceWrench());
+
+//        if(sot->solve(dq)){
+//            q += dq;}
+//        coman_robot.move(q);
+//        q_d.log(q);
+
+
+//        double toc = yarp::os::Time::now();
+
+//        if((toc-tic) < dT)
+//            yarp::os::Time::delay(dT - (toc-tic));
+//        else
+//            std::cout<<"we are too slow!"<<std::endl;
+//    }
+
+//    com_d.write();
+//    dcom_d.write();
+//    com.write();
+//    com_force_b.write();
+//    com_force_wrench_d.write();
+//    interaction_lankle_task_deltax.write();
+//    interaction_rankle_task_deltax.write();
+//    interaction_lankle_task_wrench_error.write();
+//    interaction_rankle_task_wrench_error.write();
+//    q_d.write();
+//    interaction_lankle_desired_wrench.write();
+//    interaction_lankle_task_actual_wrench.write();
+
+//    tests_utils::stopGazebo();
+//    sleep(10);
+//    tests_utils::stopYarpServer();
+//}
 
 TEST_F(testForceCoM, testForceCoM3) {
     // Start YARP Server
@@ -896,7 +896,7 @@ TEST_F(testForceCoM, testForceCoM3) {
     tests_utils::stopYarpServer();
 }
 
-//#endif
+#endif
 
 }
 
