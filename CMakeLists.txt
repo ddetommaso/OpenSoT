@@ -38,6 +38,7 @@ FIND_PACKAGE(catkin REQUIRED)
 FIND_PACKAGE(eigen_conversions REQUIRED)
 
 # compilation flags
+option(OPENSOT_COMPILE_BINDINGS "Compile OpenSoT bindings" TRUE)
 option(OPENSOT_COMPILE_EXAMPLES "Compile OpenSoT examples" TRUE)
 option(OPENSOT_COMPILE_TESTS "Compile OpenSoT tests" FALSE)
 
@@ -234,4 +235,11 @@ endif()
 if(OPENSOT_COMPILE_TESTS OR OPENSOT_COMPILE_EXAMPLES)
     add_custom_target(copy_robot_model_files ALL
                       ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/tests/robots" "${CMAKE_CURRENT_BINARY_DIR}/tests/robots")
+endif()
+
+#######################
+# Bindings            #
+#######################
+if(OPENSOT_COMPILE_BINDINGS)
+    add_subdirectory(bindings)
 endif()
