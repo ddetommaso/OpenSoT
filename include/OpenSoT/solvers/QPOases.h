@@ -28,9 +28,6 @@
 #include "QPOasesProblem.h"
 
 
-
-using namespace yarp::sig;
-
 namespace qpOASES {
     class SQProblem;
     class Options;
@@ -45,7 +42,7 @@ namespace OpenSoT{
     /**
      * @brief The QPOases_sot class implement a solver that accept a Stack of Tasks with Bounds and Constraints
      */
-    class QPOases_sot: public Solver<yarp::sig::Matrix, Vector>
+    class QPOases_sot: public Solver<yarp::sig::Matrix, yarp::sig::Vector>
     {
     public:
 	typedef boost::shared_ptr<QPOases_sot> Ptr;
@@ -89,7 +86,7 @@ namespace OpenSoT{
          * @param solution vector
          * @return true if all the stack is solved
          */
-        bool solve(Vector& solution);
+        bool solve(yarp::sig::Vector& solution);
 
         /**
          * @brief getNumberOfTasks
@@ -117,7 +114,7 @@ namespace OpenSoT{
         /**
          * @brief _qp_stack_of_tasks vector of QPOases Problem
          */
-        vector <QPOasesProblem> _qp_stack_of_tasks;
+        std::vector <QPOasesProblem> _qp_stack_of_tasks;
 
         /**
          * @brief _epsRegularisation regularisation factor for dumped least squares
