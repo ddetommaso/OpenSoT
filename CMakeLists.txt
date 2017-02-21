@@ -29,31 +29,32 @@ endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
 FIND_PACKAGE(Boost COMPONENTS system REQUIRED)
-FIND_PACKAGE(YARP REQUIRED)
-FIND_PACKAGE(Eigen3 REQUIRED)
-FIND_PACKAGE(iDynTree REQUIRED)
-FIND_PACKAGE(orocos_kdl REQUIRED)
-FIND_PACKAGE(idynutils REQUIRED)
-FIND_PACKAGE(roslib REQUIRED)
-FIND_PACKAGE(rospack REQUIRED)
-FIND_PACKAGE(rosconsole REQUIRED)
-FIND_PACKAGE(urdf REQUIRED)
-FIND_PACKAGE(kdl_parser REQUIRED)
-FIND_PACKAGE(srdfdom REQUIRED)
-FIND_PACKAGE(moveit_core REQUIRED)
-FIND_PACKAGE(PythonLibs)
-FIND_PACKAGE(PCL 1.7 REQUIRED COMPONENTS filters surface)
-FIND_PACKAGE(tf REQUIRED)
-FIND_PACKAGE(interactive_markers REQUIRED)
-FIND_PACKAGE(catkin REQUIRED)
-FIND_PACKAGE(eigen_conversions REQUIRED)
 FIND_PACKAGE(XBotInterface REQUIRED)
-FIND_PACKAGE(cartesian_utils REQUIRED)
-FIND_PACKAGE(conversion_utils_YARP REQUIRED)
-FIND_PACKAGE(idynutils2 REQUIRED)
+# FIND_PACKAGE(YARP QUIET)
+# FIND_PACKAGE(Eigen3 REQUIRED)
+# FIND_PACKAGE(iDynTree REQUIRED)
+# FIND_PACKAGE(orocos_kdl REQUIRED)
+# FIND_PACKAGE(idynutils REQUIRED)
+# FIND_PACKAGE(roslib REQUIRED)
+# FIND_PACKAGE(rospack REQUIRED)
+# FIND_PACKAGE(rosconsole REQUIRED)
+# FIND_PACKAGE(urdf REQUIRED)
+# FIND_PACKAGE(kdl_parser REQUIRED)
+# FIND_PACKAGE(srdfdom REQUIRED)
+# FIND_PACKAGE(moveit_core REQUIRED)
+# FIND_PACKAGE(PythonLibs)
+# FIND_PACKAGE(PCL 1.7 REQUIRED COMPONENTS filters surface)
+# FIND_PACKAGE(tf REQUIRED)
+# FIND_PACKAGE(interactive_markers REQUIRED)
+# FIND_PACKAGE(catkin REQUIRED)
+# FIND_PACKAGE(eigen_conversions REQUIRED)
+#
+# FIND_PACKAGE(cartesian_utils REQUIRED)
+# FIND_PACKAGE(conversion_utils_YARP REQUIRED)
+# FIND_PACKAGE(idynutils2 REQUIRED)
 
 # compilation flags
-option(OPENSOT_COMPILE_EXAMPLES "Compile OpenSoT examples" TRUE)
+option(OPENSOT_COMPILE_EXAMPLES "Compile OpenSoT examples" FALSE)
 option(OPENSOT_COMPILE_TESTS "Compile OpenSoT tests" FALSE)
 
 # add include directories
@@ -212,7 +213,7 @@ if(YARP_FOUND)
         #                      SOVERSION ${${VARS_PREFIX}_VERSION})
 endif()
 
-install(DIRECTORY include/ 
+install(DIRECTORY include/
         DESTINATION "${${VARS_PREFIX}_INSTALL_INCLUDEDIR}"
         FILES_MATCHING PATTERN "*.h")
 
@@ -230,12 +231,12 @@ if(YARP_FOUND)
 #        LIBRARY DESTINATION "${${VARS_PREFIX}_INSTALL_LIBDIR}" COMPONENT shlib)
 endif()
 
-catkin_package(
- INCLUDE_DIRS include
- LIBRARIES idyn_ros_interface
- CATKIN_DEPENDS roscpp rospy roslib srdfdom
- DEPENDS system_lib
-)
+# catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES idyn_ros_interface
+#  CATKIN_DEPENDS roscpp rospy roslib srdfdom
+#  DEPENDS system_lib
+# )
 
 if(Boost_VERSION VERSION_GREATER 104701)
     if(YARP_FOUND)
@@ -252,11 +253,11 @@ if(Boost_VERSION VERSION_GREATER 104701)
     endif()
 endif()
 
-install(TARGETS OpenSoT
-       ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-       LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-       RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-       )
+# install(TARGETS OpenSoT
+#        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#        )
 
 if(YARP_FOUND)
 #    install(TARGETS OpenSoT_YTasks
@@ -266,9 +267,9 @@ if(YARP_FOUND)
 #       )
 endif()
 
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch)
-        
+# install(DIRECTORY launch/
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch)
+
 #enabling it will add all OpenSoT dependencies as dependencies for third party users
 set_property(GLOBAL APPEND PROPERTY ${VARS_PREFIX}_TARGETS OpenSoT)
 
@@ -290,7 +291,7 @@ endif()
 
 include(AddUninstallTarget)
 
-add_subdirectory(app)
+# add_subdirectory(app)
 add_subdirectory(doc)
 
 ########################
