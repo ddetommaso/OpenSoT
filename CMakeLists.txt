@@ -28,44 +28,19 @@ endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
-FIND_PACKAGE(Boost COMPONENTS system REQUIRED)
-FIND_PACKAGE(XBotInterface REQUIRED)
-# FIND_PACKAGE(YARP QUIET)
-# FIND_PACKAGE(Eigen3 REQUIRED)
-# FIND_PACKAGE(iDynTree REQUIRED)
-# FIND_PACKAGE(orocos_kdl REQUIRED)
-# FIND_PACKAGE(idynutils REQUIRED)
-# FIND_PACKAGE(roslib REQUIRED)
-# FIND_PACKAGE(rospack REQUIRED)
-# FIND_PACKAGE(rosconsole REQUIRED)
-# FIND_PACKAGE(urdf REQUIRED)
-# FIND_PACKAGE(kdl_parser REQUIRED)
-# FIND_PACKAGE(srdfdom REQUIRED)
-# FIND_PACKAGE(moveit_core REQUIRED)
-# FIND_PACKAGE(PythonLibs)
-# FIND_PACKAGE(PCL 1.7 REQUIRED COMPONENTS filters surface)
-# FIND_PACKAGE(tf REQUIRED)
-# FIND_PACKAGE(interactive_markers REQUIRED)
-# FIND_PACKAGE(catkin REQUIRED)
-# FIND_PACKAGE(eigen_conversions REQUIRED)
-#
-# FIND_PACKAGE(cartesian_utils REQUIRED)
-# FIND_PACKAGE(conversion_utils_YARP REQUIRED)
-# FIND_PACKAGE(idynutils2 REQUIRED)
+find_package(Boost COMPONENTS system REQUIRED)
+find_package(XBotInterface REQUIRED)
 
 # compilation flags
 option(OPENSOT_COMPILE_EXAMPLES "Compile OpenSoT examples" FALSE)
 option(OPENSOT_COMPILE_TESTS "Compile OpenSoT tests" FALSE)
 
 # add include directories
-INCLUDE_DIRECTORIES(include ${YARP_INCLUDE_DIRS} ${iDynTree_INCLUDE_DIRS}
-                            ${paramHelp_INCLUDE_DIRS} ${eigen_conversions_INCLUDE_DIRS}
-                            ${EIGEN3_INCLUDE_DIR} ${PCL_INCLUDE_DIRS} ${tf_INCLUDE_DIRS}
-                            ${interactive_markers_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS}
-                            ${XBotInterface_INCLUDE_DIRS} ${cartesian_utils_INCLUDE_DIRS}
-                            ${conversion_utils_YARP_INCLUDE_DIRS} ${idynutils2_INCLUDE_DIRS})
+include_directories(include
+                    ${XBotInterface_INCLUDE_DIRS}
+                    ${cartesian_utils_INCLUDE_DIRS}
+                    )
 
-ADD_DEFINITIONS(${PCL_DEFINITIONS})
 
 # Find package qpOASES or build it using ExternalProject
 find_package(qpOASES QUIET)
@@ -149,7 +124,7 @@ endif()
 
 
 # we now add the YARP libraries to our project.
-TARGET_LINK_LIBRARIES(OpenSoT PUBLIC  ${idynutils_LIBRARIES} ${iDynTree_LIBRARIES} ${eigen_conversions_LIBRARIES}
+target_link_libraries(OpenSoT PUBLIC  ${idynutils_LIBRARIES} ${iDynTree_LIBRARIES} ${eigen_conversions_LIBRARIES}
                               PRIVATE ${qpOASES_LIBRARIES} ${PCL_LIBRARIES} ${tf_LIBRARIES}
                                       ${interactive_markers_LIBRARIES} ${PYTHON_LIBRARIES}
                                       ${XBotInterface_LIBRARIES}
