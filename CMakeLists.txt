@@ -30,6 +30,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
 find_package(Boost COMPONENTS system REQUIRED)
 find_package(XBotInterface REQUIRED)
+find_package(cartesian_utils REQUIRED)
 
 # compilation flags
 option(OPENSOT_COMPILE_EXAMPLES "Compile OpenSoT examples" FALSE)
@@ -95,7 +96,7 @@ ADD_LIBRARY(OpenSoT SHARED
 #                    src/tasks/force/CoM.cpp
 #                    src/tasks/torque/JointImpedanceCtrl.cpp
 #                    src/tasks/torque/CartesianImpedanceCtrl.cpp
-#                    src/utils/AutoStack.cpp
+                   src/utils/AutoStack.cpp
 #                    src/utils/DefaultHumanoidStack.cpp
                     src/utils/Indices.cpp
                     #src/utils/PreviewerUtils.cpp
