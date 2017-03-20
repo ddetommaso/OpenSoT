@@ -22,7 +22,7 @@
 #include <OpenSoT/constraints/Aggregated.h>
 #include <OpenSoT/solvers/QPOases.h>
 #include <OpenSoT/tasks/velocity/Cartesian.h>
-#include <OpenSoT/tasks/velocity/CoM.h>
+// #include <OpenSoT/tasks/velocity/CoM.h>
 
 /**
  * @example example_autostack.cpp
@@ -42,7 +42,7 @@ namespace OpenSoT {
      *
      * You can see an example in @ref example_autostack.cpp
      */
-    class AutoStack 
+    class AutoStack
     {
         public:
         typedef boost::shared_ptr<OpenSoT::AutoStack> Ptr;
@@ -87,9 +87,7 @@ namespace OpenSoT {
 
             OpenSoT::constraints::Aggregated::ConstraintPtr getBounds();
 
-            OpenSoT::solvers::QPOases_sot::TaskPtr getOperationalSpaceTask(const std::string& base_link, const std::string& distal_link);
-            OpenSoT::solvers::QPOases_sot::TaskPtr getOperationalSpaceTask(const std::string& task_id);
-    };    
+    };
 }
 
 /**
