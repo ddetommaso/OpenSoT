@@ -45,7 +45,7 @@
              *
              * You can see an example in @ref example_cartesian.cpp
              */
-            class Cartesian : public Task < Eigen::MatrixXd, Eigen::VectorXd > {
+            class Cartesian : public Task {
             public:
                 typedef boost::shared_ptr<Cartesian> Ptr;
             protected:
@@ -176,9 +176,9 @@
                  */
                 Eigen::VectorXd getError();
                 
-                static bool isCartesian(OpenSoT::Task<Eigen::MatrixXd, Eigen::VectorXd>::TaskPtr task);
+                static bool isCartesian(OpenSoT::Task::TaskPtr task);
 
-                static OpenSoT::tasks::velocity::Cartesian::Ptr asCartesian(OpenSoT::Task<Eigen::MatrixXd, Eigen::VectorXd>::TaskPtr task);
+                static OpenSoT::tasks::velocity::Cartesian::Ptr asCartesian(OpenSoT::Task::TaskPtr task);
 
             };
         }

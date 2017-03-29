@@ -20,24 +20,24 @@
 
 #include <OpenSoT/Task.h>
 #include <OpenSoT/Constraint.h>
-#include <list>
-
-using namespace std;
+#include <Eigen/Core>
+#include <vector>
 
  namespace OpenSoT {
-    template < class Matrix_type, class Vector_type >
     class Solver {
     public:
-        typedef Task< Matrix_type, Vector_type > TaskType;
+        typedef Eigen::MatrixXd Matrix_type;
+        typedef Eigen::VectorXd Vector_type;
+        typedef Task TaskType;
         typedef boost::shared_ptr<TaskType> TaskPtr;
-        typedef Constraint< Matrix_type, Vector_type > ConstraintType;
+        typedef Constraint ConstraintType;
         typedef boost::shared_ptr<ConstraintType> ConstraintPtr;
-        typedef Solver< Matrix_type, Vector_type > SolverType;
+        typedef Solver SolverType;
         typedef boost::shared_ptr<SolverType> SolverPtr;
-        typedef vector <TaskPtr> Stack;
+        typedef std::vector <TaskPtr> Stack;
 
     protected:
-        vector <TaskPtr> _tasks;
+        std::vector <TaskPtr> _tasks;
         ConstraintPtr _bounds;
         ConstraintPtr _globalConstraints;
 
@@ -48,14 +48,14 @@ using namespace std;
          * @brief Solver an interface for a generic solver
          * @param stack a vector of pointers to tasks
          */
-        Solver(vector <TaskPtr>& stack) : _tasks(stack){}
+        Solver(std::vector <TaskPtr>& stack) : _tasks(stack){}
 
         /**
          * @brief Solver an interface for a generic solver
          * @param stack a vector of pointers to tasks
          * @param bounds a global bound for the problem
          */
-        Solver(vector <TaskPtr>& stack,
+        Solver(std::vector <TaskPtr>& stack,
                ConstraintPtr bounds) : _tasks(stack), _bounds(bounds) {}
 
         /**
@@ -64,7 +64,7 @@ using namespace std;
          * @param bounds a global bound for the problem
          * @param globalConstraints a global constrains for the problem
          */
-        Solver(vector<TaskPtr> &stack, ConstraintPtr bounds, ConstraintPtr globalConstraints):
+        Solver(std::vector<TaskPtr> &stack, ConstraintPtr bounds, ConstraintPtr globalConstraints):
             _tasks(stack), _bounds(bounds), _globalConstraints(globalConstraints) {}
 
         virtual ~Solver(){}

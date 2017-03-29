@@ -35,7 +35,7 @@
          */
         class TaskToConstraint: public BilateralConstraint {
         public:
-            typedef boost::shared_ptr< OpenSoT::Task<Eigen::MatrixXd, Eigen::VectorXd> > TaskPtr;
+            typedef OpenSoT::Task::TaskPtr TaskPtr;
             typedef boost::shared_ptr< OpenSoT::constraints::TaskToConstraint> Ptr;
 
         private:

@@ -19,6 +19,7 @@
 #define __CONSTRAINT_H__
 
 #include <boost/shared_ptr.hpp>
+#include <Eigen/Core>
 #include <string>
 
  namespace OpenSoT {
@@ -29,10 +30,11 @@
   * 2. equalities
   * 3. unilateral
   */
- template <class Matrix_type, class Vector_type>
     class Constraint {
     public:
-        typedef Constraint< Matrix_type, Vector_type > ConstraintType;
+        typedef Eigen::MatrixXd Matrix_type;
+        typedef Eigen::VectorXd Vector_type;
+        typedef Constraint ConstraintType;
         typedef boost::shared_ptr<ConstraintType> ConstraintPtr;
     protected:
 

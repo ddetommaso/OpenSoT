@@ -41,7 +41,7 @@ namespace OpenSoT{
     /**
      * @brief The QPOases_sot class implement a solver that accept a Stack of Tasks with Bounds and Constraints
      */
-    class QPOases_sot: public Solver<Eigen::MatrixXd, Eigen::VectorXd>
+    class QPOases_sot: public Solver
     {
     public:
 	typedef boost::shared_ptr<QPOases_sot> Ptr;
@@ -113,7 +113,7 @@ namespace OpenSoT{
         /**
          * @brief _qp_stack_of_tasks vector of QPOases Problem
          */
-        vector <QPOasesProblem> _qp_stack_of_tasks;
+        std::vector <QPOasesProblem> _qp_stack_of_tasks;
 
         /**
          * @brief _epsRegularisation regularisation factor for dumped least squares

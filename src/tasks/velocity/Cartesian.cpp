@@ -235,12 +235,12 @@ void Cartesian::update_b() {
     _b = _desiredTwist + _lambda*this->getError();
 }
 
-bool OpenSoT::tasks::velocity::Cartesian::isCartesian(OpenSoT::Task<Eigen::MatrixXd, Eigen::VectorXd>::TaskPtr task)
+bool OpenSoT::tasks::velocity::Cartesian::isCartesian(OpenSoT::Task::TaskPtr task)
 {
     return (bool)boost::dynamic_pointer_cast<OpenSoT::tasks::velocity::Cartesian>(task);
 }
 
-OpenSoT::tasks::velocity::Cartesian::Ptr OpenSoT::tasks::velocity::Cartesian::asCartesian(OpenSoT::Task<Eigen::MatrixXd, Eigen::VectorXd>::TaskPtr task)
+OpenSoT::tasks::velocity::Cartesian::Ptr OpenSoT::tasks::velocity::Cartesian::asCartesian(OpenSoT::Task::TaskPtr task)
 {
     return boost::dynamic_pointer_cast<OpenSoT::tasks::velocity::Cartesian>(task);
 }

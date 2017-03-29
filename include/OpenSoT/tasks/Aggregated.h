@@ -37,7 +37,7 @@
          * it is comprised. Take a look at getConstraints(), getAggregatedConstraints(), getOwnConstraints() for more infos.
          *
          */
-        class Aggregated: public Task<Eigen::MatrixXd, Eigen::VectorXd> {
+        class Aggregated: public Task {
         public:
             typedef boost::shared_ptr<Aggregated> Ptr;
         protected:
@@ -192,7 +192,7 @@
              */
             void setLambda(double lambda);
               
-            static bool isAggregated(OpenSoT::Task<Eigen::MatrixXd, Eigen::VectorXd>::TaskPtr task);
+            static bool isAggregated(OpenSoT::Task::TaskPtr task);
         };
 
     }

@@ -24,6 +24,7 @@
  #include <OpenSoT/Constraint.h>
  #include <assert.h>
  #include <boost/shared_ptr.hpp>
+ #include <Eigen/Core>
 
  namespace OpenSoT {
 
@@ -41,13 +42,14 @@
     /**
      * @brief Task represents a task in the form \f$T(A,b)\f$ where \f$A\f$ is the task error jacobian and \f$b\f$ is the task error
     */
-    template <class Matrix_type, class Vector_type>
     class Task {
 
     public:
-        typedef Task< Matrix_type, Vector_type > TaskType;
+        typedef Eigen::MatrixXd Matrix_type;
+        typedef Eigen::VectorXd Vector_type;
+        typedef Task TaskType;
         typedef boost::shared_ptr<TaskType> TaskPtr;
-        typedef Constraint< Matrix_type, Vector_type > ConstraintType;
+        typedef Constraint ConstraintType;
         typedef boost::shared_ptr<ConstraintType> ConstraintPtr;
     protected:
 
@@ -69,7 +71,7 @@
         /**
          * @brief _A Jacobian of the Task
          */
-        Matrix_type _A;
+        Eigen::MatrixXd _A;
 
         /**
          * @brief _b error associated to the Task
