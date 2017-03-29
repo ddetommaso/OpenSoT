@@ -30,7 +30,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
 find_package(Boost COMPONENTS system REQUIRED)
 find_package(XBotInterface REQUIRED)
-find_package(cartesian_utils REQUIRED)
 
 # compilation flags
 option(OPENSOT_COMPILE_EXAMPLES "Compile OpenSoT examples" FALSE)
@@ -39,7 +38,6 @@ option(OPENSOT_COMPILE_TESTS "Compile OpenSoT tests" FALSE)
 # add include directories
 include_directories(include
                     ${XBotInterface_INCLUDE_DIRS}
-                    ${cartesian_utils_INCLUDE_DIRS}
                     )
 
 
