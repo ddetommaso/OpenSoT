@@ -234,4 +234,78 @@ OpenSoT::tasks::Aggregated::Ptr operator<<( OpenSoT::tasks::Aggregated::Ptr task
 OpenSoT::AutoStack::Ptr operator<<( OpenSoT::AutoStack::Ptr stack1,
                                     const OpenSoT::constraints::Aggregated::ConstraintPtr bound);
 
+/**
+ * @brief operator << adds a new task as a constraint to the task specified
+ * @param task a pointer to the task
+ * @param constraint a pointer to the constraint
+ * @return a pointer to the same input task, with a constraint added
+ * (NOTICE the task is NOT a copy, it's the input task to which we
+ * added a new constraint)
+ */
+OpenSoT::tasks::Aggregated::TaskPtr operator<<( OpenSoT::tasks::Aggregated::TaskPtr task,
+                                                const OpenSoT::tasks::Aggregated::TaskPtr constraint);
+/**
+ * @brief operator << adds a new task as a constraint to the task specified
+ * @param task a pointer to the task
+ * @param constraint a pointer to the constraint
+ * @return a pointer to the same input task, with a constraint added
+ * (NOTICE the task is NOT a copy, it's the input task to which we
+ * added a new constraint)
+ */
+OpenSoT::tasks::Aggregated::TaskPtr operator<<( OpenSoT::tasks::Aggregated::TaskPtr task,
+                                                const OpenSoT::tasks::Aggregated::Ptr constraint);
+
+/**
+ * @brief operator << adds a new task as a constraint to the task specified
+ * @param task a pointer to the task
+ * @param constraint a pointer to the constraint
+ * @return a pointer to the same input task, with a constraint added
+ * (NOTICE the task is NOT a copy, it's the input task to which we
+ * added a new constraint)
+ */
+OpenSoT::tasks::Aggregated::Ptr operator<<( OpenSoT::tasks::Aggregated::Ptr task,
+                                            const OpenSoT::tasks::Aggregated::Ptr constraint);
+
+/**
+ * @brief operator << adds a new task as a constraint to the task specified
+ * @param task a pointer to the task
+ * @param constraint a pointer to the constraint
+ * @return a pointer to the same input task, with a constraint added
+ * (NOTICE the task is NOT a copy, it's the input task to which we
+ * added a new constraint)
+ */
+OpenSoT::tasks::Aggregated::Ptr operator<<( OpenSoT::tasks::Aggregated::Ptr task,
+                                            const OpenSoT::tasks::Aggregated::TaskPtr constraint);
+
+/**
+ * @brief operator << adds a new constraint/bound to the stack specified.
+ * A unicity test will be made, so that if the stack already has the input
+ * bound in the list of bounds, it will not get added.
+ * (NOTICE that the equality test for the bounds is on pointers, so you can have duplicated
+ * bounds if you made multiple instances of the same bounds/constraints)
+ * @param task a pointer to the task
+ * @param bound a pointer to the bound/constraint
+ * @return a pointer to the same input stack, with a constraint/bound added
+ * (NOTICE the stack is NOT a copy, it's the input stack to which we
+ * added a new constraint)
+ */
+OpenSoT::AutoStack::Ptr operator<<( OpenSoT::AutoStack::Ptr stack1,
+                                    const OpenSoT::tasks::Aggregated::TaskPtr bound);
+
+/**
+ * @brief operator << adds a new constraint/bound to the stack specified.
+ * A unicity test will be made, so that if the stack already has the input
+ * bound in the list of bounds, it will not get added.
+ * (NOTICE that the equality test for the bounds is on pointers, so you can have duplicated
+ * bounds if you made multiple instances of the same bounds/constraints)
+ * @param task a pointer to the task
+ * @param bound a pointer to the bound/constraint
+ * @return a pointer to the same input stack, with a constraint/bound added
+ * (NOTICE the stack is NOT a copy, it's the input stack to which we
+ * added a new constraint)
+ */
+OpenSoT::AutoStack::Ptr operator<<( OpenSoT::AutoStack::Ptr stack1,
+                                    const OpenSoT::tasks::Aggregated::Ptr bound);
+
+
 #endif

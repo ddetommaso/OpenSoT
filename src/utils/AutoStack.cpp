@@ -1,4 +1,5 @@
 #include <OpenSoT/utils/AutoStack.h>
+#include <OpenSoT/constraints/TaskToConstraint.h>
 #include <algorithm>
 
 OpenSoT::tasks::Aggregated::Ptr operator+(  const OpenSoT::tasks::Aggregated::TaskPtr task1,
@@ -181,10 +182,42 @@ OpenSoT::tasks::Aggregated::TaskPtr operator<<( OpenSoT::tasks::Aggregated::Task
     return task;
 }
 
+OpenSoT::tasks::Aggregated::TaskPtr operator<<( OpenSoT::tasks::Aggregated::TaskPtr task,
+                                                const OpenSoT::tasks::Aggregated::TaskPtr constraint)
+{
+    task->getConstraints().push_back(OpenSoT::constraints::TaskToConstraint::Ptr(
+        new OpenSoT::constraints::TaskToConstraint(constraint)));
+    return task;
+}
+
+OpenSoT::tasks::Aggregated::TaskPtr operator<<( OpenSoT::tasks::Aggregated::TaskPtr task,
+                                                const OpenSoT::tasks::Aggregated::Ptr constraint)
+{
+    task->getConstraints().push_back(OpenSoT::constraints::TaskToConstraint::Ptr(
+        new OpenSoT::constraints::TaskToConstraint(constraint)));
+    return task;
+}
+
 OpenSoT::tasks::Aggregated::Ptr operator<<( OpenSoT::tasks::Aggregated::Ptr task,
                                             const OpenSoT::constraints::Aggregated::ConstraintPtr constraint)
 {
     task->getConstraints().push_back(constraint);
+    return task;
+}
+
+OpenSoT::tasks::Aggregated::Ptr operator<<( OpenSoT::tasks::Aggregated::Ptr task,
+                                            const OpenSoT::tasks::Aggregated::Ptr constraint)
+{
+    task->getConstraints().push_back(OpenSoT::constraints::TaskToConstraint::Ptr(
+        new OpenSoT::constraints::TaskToConstraint(constraint)));
+    return task;
+}
+
+OpenSoT::tasks::Aggregated::Ptr operator<<( OpenSoT::tasks::Aggregated::Ptr task,
+                                            const OpenSoT::tasks::Aggregated::TaskPtr constraint)
+{
+    task->getConstraints().push_back(OpenSoT::constraints::TaskToConstraint::Ptr(
+        new OpenSoT::constraints::TaskToConstraint(constraint)));
     return task;
 }
 
@@ -202,6 +235,43 @@ OpenSoT::AutoStack::Ptr operator<<( OpenSoT::AutoStack::Ptr autoStack,
 
     return autoStack;
 }
+
+OpenSoT::AutoStack::Ptr operator<<( OpenSoT::AutoStack::Ptr autoStack,
+                                    const OpenSoT::tasks::Aggregated::TaskPtr bound)
+{
+    // check both pointers are valid
+    assert(autoStack && bound);
+
+    OpenSoT::constraints::TaskToConstraint::Ptr _bound;
+    _bound.reset(new OpenSoT::constraints::TaskToConstraint(bound));
+
+    if((autoStack->getBoundsList().size() == 0) ||
+       (std::find(autoStack->getBoundsList().begin(),
+                 autoStack->getBoundsList().end(),
+                 _bound) == autoStack->getBoundsList().end()))
+        autoStack->getBoundsList().push_back(_bound);
+
+    return autoStack;
+}
+
+OpenSoT::AutoStack::Ptr operator<<( OpenSoT::AutoStack::Ptr autoStack,
+                                    const OpenSoT::tasks::Aggregated::Ptr bound)
+{
+    // check both pointers are valid
+    assert(autoStack && bound);
+
+    OpenSoT::constraints::TaskToConstraint::Ptr _bound;
+    _bound.reset(new OpenSoT::constraints::TaskToConstraint(bound));
+
+    if((autoStack->getBoundsList().size() == 0) ||
+       (std::find(autoStack->getBoundsList().begin(),
+                 autoStack->getBoundsList().end(),
+                 _bound) == autoStack->getBoundsList().end()))
+        autoStack->getBoundsList().push_back(_bound);
+
+    return autoStack;
+}
+
 
 OpenSoT::AutoStack::AutoStack(const double x_size) :
     _stack(),
